@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/view/home/widgets/homegridview.dart';
+import 'package:ecommerce/view/lists.dart';
 import 'package:ecommerce/view/popular_brands/popularbrands.dart';
 import 'package:ecommerce/view/popular_brands/widgets/adidas.dart';
 import 'package:ecommerce/view/popular_brands/widgets/converse.dart';
@@ -7,6 +10,8 @@ import 'package:ecommerce/view/popular_brands/widgets/nike.dart';
 import 'package:ecommerce/view/popular_brands/widgets/puma.dart';
 import 'package:ecommerce/view/popular_brands/widgets/reebok.dart';
 import 'package:ecommerce/view/popular_brands/widgets/under_armour.dart';
+import 'package:ecommerce/view/productdetail/product_detail.dart';
+import 'package:ecommerce/view/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,7 +33,9 @@ class HomeScreen extends StatelessWidget {
           ),
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(const Settings());
+                },
                 icon: const Icon(
                   Icons.settings,
                   color: Colors.black,
@@ -69,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => NikeClass(),
+                      builder: (context) => const NikeClass(),
                     )),
                     child: PopularBrands(
                       imgpath: 'assets/images/nike-256.png',
@@ -77,31 +84,31 @@ class HomeScreen extends StatelessWidget {
                   ),
                   kwidth10,
                   InkWell(
-                    onTap: () => Get.to(AdidasClass()),
+                    onTap: () => Get.to(const AdidasClass()),
                     child: PopularBrands(
                         imgpath:
                             'assets/images/Adidas-White-Logo-PNG-Clipart-Background.png'),
                   ),
                   kwidth10,
                   InkWell(
-                    onTap: () => Get.to(PumaClass()),
+                    onTap: () => Get.to(const PumaClass()),
                     child: PopularBrands(
                         imgpath: 'assets/images/puma-logo-png-21175.png'),
                   ),
                   kwidth10,
                   InkWell(
-                      onTap: () => Get.to(ReebokClass()),
+                      onTap: () => Get.to(const ReebokClass()),
                       child: PopularBrands(
                           imgpath: 'assets/images/PngItem_1900489.png')),
                   kwidth10,
                   InkWell(
-                    onTap: () => Get.to(UnderArmourClass()),
+                    onTap: () => Get.to(const UnderArmourClass()),
                     child: PopularBrands(
                         imgpath: 'assets/images/pngaaa.com-3430149.png'),
                   ),
                   kwidth10,
                   InkWell(
-                    onTap: () => Get.to(ConverseClass()),
+                    onTap: () => Get.to(const ConverseClass()),
                     child: PopularBrands(
                         imgpath:
                             'assets/images/pngwing.com__8_-removebg-preview.png'),
@@ -110,25 +117,29 @@ class HomeScreen extends StatelessWidget {
               ),
               kheight30,
               Expanded(
-                  child: GridView.count(
-                padding: const EdgeInsets.all(10),
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                crossAxisCount: 2,
-                children: [
-                  HomeGridView(
-                      imgPath: 'assets/images/images (1).png',
-                      productName: 'Adidas Bouncer\n₹1200'),
-                  HomeGridView(
-                      imgPath: 'assets/images/adidas evolve.png',
-                      productName: 'Adidas Evolve Run\n₹1600'),
-                  HomeGridView(
-                      imgPath: 'assets/images/puma pacer.png',
-                      productName: 'Puma Pacer Prime\n1400'),
-                  HomeGridView(
-                      imgPath: 'assets/images/puma laceup.png',
-                      productName: 'Puma Lace_Up\n₹1300')
-                ],
+                  child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10),
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Get.to(ProductDetailView(
+                        imgPath: imagePath[index],
+                        productNames: productName[index],
+                        productDes: productDescription[index],
+                        productRate: productRate[index],
+                      ));
+                      log(index.toString());
+                    },
+                    child: HomeGridView(
+                        imgPath: imagePath[index],
+                        productName: productName[index],
+                        productRate: productRate[index]),
+                  );
+                },
+                itemCount: 10,
               ))
             ],
           ),

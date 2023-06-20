@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/view/bottomnavigation.dart';
 import 'package:ecommerce/view/user/login/widgets/loginbuttonwidget.dart';
 import 'package:ecommerce/view/user/login/widgets/loginfields.dart';
 import 'package:ecommerce/view/user/signup/usersignup.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class UserLogin extends StatefulWidget {
   const UserLogin({super.key});
@@ -20,7 +24,7 @@ class _UserLoginState extends State<UserLogin> {
           const Center(
               child: Image(
             image: AssetImage('assets/images/Blogpost-image.png'),
-            height: 200,
+            height: 300,
             width: 250,
           )),
           const Padding(
@@ -48,6 +52,7 @@ class _UserLoginState extends State<UserLogin> {
           kheight10,
           loginbottonwidget(
             title: 'Sign In',
+            page: BottomNavigationClass(),
           ),
           const Center(
             child: Text(
@@ -56,7 +61,8 @@ class _UserLoginState extends State<UserLogin> {
             ),
           ),
           Center(
-            child: loginbottonwidget(title: 'Continue with Google'),
+            child:
+                loginbottonwidget(title: 'Continue with Google', page: 'ddd'),
           ),
           kheight10,
           Padding(
@@ -70,9 +76,7 @@ class _UserLoginState extends State<UserLogin> {
                 ),
                 kwidth20,
                 InkWell(
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const UserSignUp(),
-                  )),
+                  onTap: () => Get.off(const UserSignUp()),
                   child: const Text(
                     'Sign Up',
                     style: TextStyle(fontSize: 16, color: Colors.blue),

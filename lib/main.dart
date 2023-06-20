@@ -1,4 +1,5 @@
-import 'package:ecommerce/view/bottomnavigation.dart';
+import 'package:ecommerce/view/splash_screens/splash_one.dart';
+import 'package:ecommerce/view/user/signup/usersignup.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: BottomNavigation(),
+      home: const SplashOne(),
     );
   }
 }

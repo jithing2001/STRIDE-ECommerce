@@ -2,6 +2,7 @@ import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/view/user/login/userlogin.dart';
 import 'package:ecommerce/view/user/signup/widgets/signupfields.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class UserSignUp extends StatelessWidget {
   const UserSignUp({super.key});
@@ -24,7 +25,7 @@ class UserSignUp extends StatelessWidget {
             child: Image(
               image: AssetImage(
                   'assets/images/istockphoto-1305268276-612x612.jpg'),
-              height: 200,
+              height: 300,
             ),
           ),
           SignupFields(
@@ -39,7 +40,9 @@ class UserSignUp extends StatelessWidget {
               width: 120,
               height: 40,
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(UserLogin());
+                  },
                   child: const Text(
                     'Sign Up',
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
@@ -58,11 +61,7 @@ class UserSignUp extends StatelessWidget {
                 kwidth10,
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const UserLogin(),
-                        ));
+                    Get.to(const UserLogin());
                   },
                   child: const Text(
                     'Sign in',

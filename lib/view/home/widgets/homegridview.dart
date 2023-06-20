@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 class HomeGridView extends StatelessWidget {
   String? imgPath;
   String? productName;
-  HomeGridView({super.key, required this.imgPath, required this.productName});
+  String? productRate;
+  HomeGridView(
+      {super.key,
+      required this.imgPath,
+      required this.productName,
+      required this.productRate});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +18,7 @@ class HomeGridView extends StatelessWidget {
       heightFactor: 1,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Container(
+        child: SizedBox(
           height: 200,
           width: 350,
           // color: Colors.green,
@@ -53,8 +58,19 @@ class HomeGridView extends StatelessWidget {
               ),
               Text(
                 '$productName',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  kwidth40,
+                  Text(
+                    '$productRate',
+                    style: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              )
             ],
           ),
         ),
