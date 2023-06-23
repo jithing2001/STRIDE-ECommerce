@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class loginbottonwidget extends StatelessWidget {
   String? title;
-  final dynamic page;
-  loginbottonwidget({super.key, required this.title, required this.page});
+  final Function() onPressed;
+  // final dynamic page;
+  loginbottonwidget({super.key, required this.title, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +13,7 @@ class loginbottonwidget extends StatelessWidget {
         width: 200,
         height: 40,
         child: ElevatedButton(
-            onPressed: () {
-              Get.off(page);
-            },
+            onPressed: onPressed,
             child: Text(
               '$title',
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),

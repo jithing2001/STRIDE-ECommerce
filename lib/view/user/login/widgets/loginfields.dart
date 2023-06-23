@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 class LoginFields extends StatelessWidget {
   String? title;
   String? hint;
-  LoginFields({super.key, required this.title, required this.hint});
+  TextEditingController controller = TextEditingController();
+  
+  LoginFields({super.key, required this.title, required this.hint,required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,9 @@ class LoginFields extends StatelessWidget {
           ),
           kheight10,
           TextFormField(
+            controller: controller,
             decoration: InputDecoration(
+              
                 hintText: '$hint',
                 border: OutlineInputBorder(
                     borderSide: const BorderSide(

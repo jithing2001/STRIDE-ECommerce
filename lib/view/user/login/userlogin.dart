@@ -1,21 +1,20 @@
-import 'dart:developer';
-
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/service/authentication.dart';
 import 'package:ecommerce/view/bottomnavigation.dart';
 import 'package:ecommerce/view/user/login/widgets/loginbuttonwidget.dart';
 import 'package:ecommerce/view/user/login/widgets/loginfields.dart';
 import 'package:ecommerce/view/user/signup/usersignup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class UserLogin extends StatefulWidget {
-  const UserLogin({super.key});
+class UserLogin extends StatelessWidget {
+  UserLogin({super.key});
 
-  @override
-  State<UserLogin> createState() => _UserLoginState();
-}
+  TextEditingController mailController = TextEditingController();
 
-class _UserLoginState extends State<UserLogin> {
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,10 +34,14 @@ class _UserLoginState extends State<UserLogin> {
             ),
           ),
           LoginFields(
+            controller: mailController,
             title: 'E-mail',
             hint: 'Enter your Email',
           ),
-          LoginFields(title: 'Password', hint: 'Enter your Password'),
+          LoginFields(
+              controller: passwordController,
+              title: 'Password',
+              hint: 'Enter your Password'),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -52,7 +55,22 @@ class _UserLoginState extends State<UserLogin> {
           kheight10,
           loginbottonwidget(
             title: 'Sign In',
-            page: BottomNavigationClass(),
+            onPressed: () {
+              if (mailController.text.isNotEmpty &&
+                  passwordController.text.isNotEmpty) {
+                Authentication()
+                    .signInWithEmailAndPassword(
+                        mailController.text, passwordController.text)
+                    .then((success) {
+                  if (success) {
+                    Get.offAll(BottomNavigationClass());
+                  } else {
+                    // Show an error message indicating incorrect credentials
+                    Get.snackbar('Error', 'Invalid email or password');
+                  }
+                });
+              }
+            },
           ),
           const Center(
             child: Text(
@@ -61,8 +79,23 @@ class _UserLoginState extends State<UserLogin> {
             ),
           ),
           Center(
-            child:
-                loginbottonwidget(title: 'Continue with Google', page: 'ddd'),
+            child: loginbottonwidget(
+              title: 'Continue with Google',
+              onPressed: () async {
+                UserCredential _cred =
+                    await Authentication().signInWithGoogle();
+                // final user = _cred.user;
+
+                // print('cred -> ${user?.displayName}');
+                //     .then((userCredential) {
+                if (_cred != null) {
+                  Get.to(BottomNavigationClass());
+                } else {
+                  Get.snackbar('error', 'User null');
+                }
+                // });
+              },
+            ),
           ),
           kheight10,
           Padding(

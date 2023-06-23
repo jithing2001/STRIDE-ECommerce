@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class SignupFields extends StatelessWidget {
   String? title;
   String? hint;
-  SignupFields({super.key, required this.title, required this.hint});
+   TextEditingController controller = TextEditingController();
+  SignupFields({super.key, required this.title, required this.hint,required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class SignupFields extends StatelessWidget {
             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
           ),
           TextFormField(
+            controller: controller,
             decoration: InputDecoration(
                 hintText: hint,
                 border: OutlineInputBorder(

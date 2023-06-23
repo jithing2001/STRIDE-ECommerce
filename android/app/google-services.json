@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "521659490248",
+    "project_id": "stride-user",
+    "storage_bucket": "stride-user.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521659490248:android:be168d31de552aae1e2afd",
+        "android_client_info": {
+          "package_name": "com.jithin.stride"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521659490248-19niigche1r7vvgqel8jiv9fnpecag15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRxGPblFS_3jTYlY7UEYyoeeSKx9zNVJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521659490248-19niigche1r7vvgqel8jiv9fnpecag15.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

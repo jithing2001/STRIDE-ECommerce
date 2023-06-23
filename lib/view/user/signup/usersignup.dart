@@ -1,4 +1,6 @@
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/service/authentication.dart';
+import 'package:ecommerce/view/bottomnavigation.dart';
 import 'package:ecommerce/view/user/login/userlogin.dart';
 import 'package:ecommerce/view/user/signup/widgets/signupfields.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,12 @@ class UserSignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController mailController = TextEditingController();
+    TextEditingController phoneController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
+
     return Scaffold(
       backgroundColor: kwhite,
       appBar: AppBar(
@@ -25,23 +33,49 @@ class UserSignUp extends StatelessWidget {
             child: Image(
               image: AssetImage(
                   'assets/images/istockphoto-1305268276-612x612.jpg'),
-              height: 300,
+              height: 250,
             ),
           ),
           SignupFields(
+            controller: nameController,
             title: 'Name',
             hint: 'Enter your Name',
           ),
-          SignupFields(title: 'E-mail', hint: 'Enter Your Email'),
-          SignupFields(title: 'Password', hint: 'Enter your Password'),
-          SignupFields(title: 'Confirm Password', hint: 'Re-Enter Password'),
+          SignupFields(
+              controller: mailController,
+              title: 'E-mail',
+              hint: 'Enter Your Email'),
+          SignupFields(
+              controller: phoneController,
+              title: 'Phone Number',
+              hint: 'Enter Your Number'),
+          SignupFields(
+              controller: passwordController,
+              title: 'Password',
+              hint: 'Enter your Password'),
+          SignupFields(
+              controller: confirmPasswordController,
+              title: 'Confirm Password',
+              hint: 'Re-Enter Password'),
           Center(
             child: SizedBox(
               width: 120,
               height: 40,
               child: ElevatedButton(
                   onPressed: () {
-                    Get.to(UserLogin());
+                    if (mailController.text.isNotEmpty &&
+                        passwordController.text.isNotEmpty) {
+                      Authentication()
+                          .registerWithEmailAndPassword(mailController.text,
+                              passwordController.text, nameController.text,phoneController.text)
+                          .then((success) {
+                        if (success) {
+                          Get.offAll( BottomNavigationClass());
+                        } else {
+                          Get.snackbar('Error', 'Invalid email or password');
+                        }
+                      });
+                    }
                   },
                   child: const Text(
                     'Sign Up',
@@ -61,7 +95,7 @@ class UserSignUp extends StatelessWidget {
                 kwidth10,
                 InkWell(
                   onTap: () {
-                    Get.to(const UserLogin());
+                    Get.to(UserLogin());
                   },
                   child: const Text(
                     'Sign in',

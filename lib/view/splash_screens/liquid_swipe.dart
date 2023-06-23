@@ -1,5 +1,4 @@
 import 'package:ecommerce/constants.dart';
-import 'package:ecommerce/view/bottomnavigation.dart';
 import 'package:ecommerce/view/user/login/userlogin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -127,7 +126,7 @@ class LiquidSwipeClass extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Get.off(const UserLogin());
+                Get.off( UserLogin());
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(kblack)),

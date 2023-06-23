@@ -1,5 +1,8 @@
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/service/authentication.dart';
+import 'package:ecommerce/view/user/login/userlogin.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -25,7 +28,12 @@ class Settings extends StatelessWidget {
           SettingsWidget(icon: Icons.share, title: 'Invite Friends'),
           SettingsWidget(icon: Icons.privacy_tip, title: 'Privacy Policy'),
           SettingsWidget(icon: Icons.event_note, title: 'Terms and Conditions'),
-          SettingsWidget(icon: Icons.logout, title: 'Log Out'),
+          InkWell(
+              onTap: () {
+                Authentication().signOut();
+                Get.offAll(UserLogin());
+              },
+              child: SettingsWidget(icon: Icons.logout, title: 'Log Out')),
         ],
       ),
     );
