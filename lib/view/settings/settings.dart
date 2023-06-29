@@ -4,8 +4,8 @@ import 'package:ecommerce/view/user/login/userlogin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Settings extends StatelessWidget {
-  const Settings({super.key});
+class SettingsClass extends StatelessWidget {
+  const SettingsClass({super.key});
 
   @override
   Widget build(BuildContext context) {

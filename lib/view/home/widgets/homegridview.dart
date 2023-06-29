@@ -21,11 +21,9 @@ class HomeGridView extends StatelessWidget {
         child: SizedBox(
           height: 200,
           width: 350,
-          // color: Colors.green,
           child: Column(
             children: [
               Stack(
-                // fit: StackFit.expand,
                 children: [
                   Container(
                     width: 350,
@@ -36,38 +34,38 @@ class HomeGridView extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image(
-                        image: AssetImage(
+                        image: NetworkImage(
                           '$imgPath',
                         ),
-                        // fit: BoxFit.cover,
+                        fit: BoxFit.cover,
                         height: 120,
                       ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.favorite_border,
-                        color: kblack,
-                      ),
-                      kwidth20
-                    ],
-                  )
                 ],
               ),
-              Text(
-                '$productName',
-                style:
-                    const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  kwidth20,
+                  SizedBox(
+                    width: 170,
+                    child: Text(
+                      '$productName',
+                      style: const TextStyle(
+                          fontSize: 19, fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  kwidth40,
+                  kwidth20,
                   Text(
-                    '$productRate',
-                    style: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                    '₹$productRate',
+                    style: const TextStyle(
+                        fontSize: 19, fontWeight: FontWeight.bold),
                   ),
                 ],
               )

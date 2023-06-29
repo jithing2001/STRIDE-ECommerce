@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/view/home/widgets/homegridview.dart';
 import 'package:ecommerce/view/lists.dart';
@@ -10,10 +11,10 @@ import 'package:ecommerce/view/popular_brands/widgets/puma.dart';
 import 'package:ecommerce/view/popular_brands/widgets/reebok.dart';
 import 'package:ecommerce/view/popular_brands/widgets/under_armour.dart';
 import 'package:ecommerce/view/productdetail/product_detail.dart';
-import 'package:ecommerce/view/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ecommerce/view/settings/settings.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -33,7 +34,7 @@ class HomeScreen extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                  Get.to(const Settings());
+                  Get.to(SettingsClass());
                 },
                 icon: const Icon(
                   Icons.settings,
@@ -116,30 +117,48 @@ class HomeScreen extends StatelessWidget {
               ),
               kheight30,
               Expanded(
-                  child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10),
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Get.to(ProductDetailView(
-                        imgPath: imagePath[index],
-                        productNames: productName[index],
-                        productDes: productDescription[index],
-                        productRate: productRate[index],
-                      ));
-                      log(index.toString());
-                    },
-                    child: HomeGridView(
-                        imgPath: imagePath[index],
-                        productName: productName[index],
-                        productRate: productRate[index]),
-                  );
-                },
-                itemCount: 10,
-              ))
+                  child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('myApp')
+                          .doc('Admin')
+                          .collection('products')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10),
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Get.to(ProductDetailView(
+                                    imgPath: imagePath[index],
+                                    productNames: productName[index],
+                                    productDes: productDescription[index],
+                                    productRate: productRate[index]));
+                                log(index.toString());
+                              },
+                              child: HomeGridView(
+                                imgPath: snapshot.data!.docs[index]
+                                    ['productImg'],
+                                productName: snapshot.data!.docs[index]
+                                    ['productName'],
+                                productRate: snapshot.data!.docs[index]
+                                    ['ProductPrice'],
+                              ),
+                            );
+                          },
+                          itemCount: snapshot.data!.docs.length,
+                        );
+                      }))
             ],
           ),
         ));
