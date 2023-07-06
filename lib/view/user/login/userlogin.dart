@@ -84,16 +84,12 @@ class UserLogin extends StatelessWidget {
               onPressed: () async {
                 UserCredential _cred =
                     await Authentication().signInWithGoogle();
-                // final user = _cred.user;
 
-                // print('cred -> ${user?.displayName}');
-                //     .then((userCredential) {
                 if (_cred != null) {
                   Get.to(BottomNavigationClass());
                 } else {
                   Get.snackbar('error', 'User null');
                 }
-                // });
               },
             ),
           ),

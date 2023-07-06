@@ -15,9 +15,9 @@ class BottomNavigationClass extends StatelessWidget {
   final List<Widget> pages = [
     const HomeScreen(),
     const MyOrders(),
-    const MyCart(),
-    const Favorites(),
-    const Profile(),
+    MyCart(),
+     Favorites(),
+     Profile(),
   ];
 
   @override

@@ -1,14 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/controllers/quantity_controller.dart';
 import 'package:ecommerce/view/checkout/checkout.dart';
+import 'package:ecommerce/view/mycart/widgets/quantity_widgets.dart';
+import 'package:ecommerce/view/productdetail/product_detail.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MyCart extends StatelessWidget {
-  const MyCart({super.key});
+  MyCart({super.key});
+
+  QuantityController quantityController = QuantityController();
 
   @override
   Widget build(BuildContext context) {
-    int number = 1;
+    final currentemail = FirebaseAuth.instance.currentUser!.email;
+
     return Scaffold(
       backgroundColor: kwhite,
       appBar: AppBar(
@@ -27,69 +35,85 @@ class MyCart extends StatelessWidget {
             SizedBox(
               height: 600,
               width: double.infinity,
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Container(
-                      height: 100,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: kblack)),
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: Image(
-                              image:
-                                  AssetImage('assets/images/puma laceup.png'),
-                              fit: BoxFit.cover,
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(currentemail)
+                      .collection('cart')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.data == null) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: InkWell(
+                            onTap: () => Get.to(ProductDetailView(
+                              imgPath: snapshot.data!.docs[index]['productImg'],
+                              productNames: snapshot.data!.docs[index]
+                                  ['productName'],
+                              productDes: snapshot.data!.docs[index]
+                                  ['productDes'],
+                              productRate: snapshot.data!.docs[index]
+                                  ['productPrice'],
+                              sellingRate: snapshot.data!.docs[index]
+                                  ['discountPrice'],
+                            
+                            )),
+                            child: Container(
+                              height: 100,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: kblack)),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: Image(
+                                      image: NetworkImage(
+                                          '${snapshot.data!.docs[index]['productImg']}'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  kwidth30,
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '${snapshot.data!.docs[index]['productName']}',
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                          '${int.parse(snapshot.data!.docs[index]['discountPrice']) * quantityController.count.value}',
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                      kheight10,
+                                      QuantityWidget()
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.delete))
+                                ],
+                              ),
                             ),
                           ),
-                          kwidth30,
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'Nike Flex Control',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              const Text('₹2500',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
-                              kheight10,
-                              Container(
-                                height: 25,
-                                width: 70,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: kblack)),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Icon(Icons.remove),
-                                    Text('$number'),
-                                    const Icon(Icons.add)
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          const Spacer(),
-                          IconButton(
-                              onPressed: () {}, icon: const Icon(Icons.delete))
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+                        );
+                      },
+                    );
+                  }),
             ),
             Container(
               decoration: BoxDecoration(

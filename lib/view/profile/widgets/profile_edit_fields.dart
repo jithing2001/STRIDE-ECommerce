@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 
 class ProfieEditFields extends StatelessWidget {
   String? hint;
-  ProfieEditFields({super.key, required this.hint});
+
+  TextEditingController inputController;
+
+  ProfieEditFields(
+      {super.key, required this.hint, required this.inputController});
 
   @override
   Widget build(BuildContext context) {
+    print('controller : ${inputController.text}');
+
     return TextFormField(
+      controller: inputController,
       decoration: InputDecoration(
           hintText: '$hint',
           border: OutlineInputBorder(

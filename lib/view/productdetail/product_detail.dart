@@ -1,23 +1,38 @@
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/model/product_model.dart';
+import 'package:ecommerce/service/cartservice.dart';
+import 'package:ecommerce/service/favorite_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'widgets/productsize.dart';
 
-class ProductDetailView extends StatelessWidget {
+class ProductDetailView extends StatefulWidget {
   String? imgPath;
   String? productNames;
   String? productDes;
   String? productRate;
-  ProductDetailView(
-      {super.key,
-      required this.imgPath,
-      required this.productNames,
-      required this.productDes,
-      required this.productRate});
+  String? sellingRate;
+
+  ProductDetailView({
+    super.key,
+    required this.imgPath,
+    required this.productNames,
+    required this.productDes,
+    required this.productRate,
+    required this.sellingRate,
+  });
 
   @override
+  State<ProductDetailView> createState() => _ProductDetailViewState();
+}
+
+class _ProductDetailViewState extends State<ProductDetailView> {
+  bool isFav = false;
+  @override
   Widget build(BuildContext context) {
+    checkFavoriteStatus();
+
     return Scaffold(
       backgroundColor: kwhite,
       appBar: AppBar(
@@ -33,10 +48,24 @@ class ProductDetailView extends StatelessWidget {
             )),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                
+                ProductModel model = ProductModel(
+                  productName: widget.productNames!,
+                  productPrice: widget.productRate!,
+                  discountPrice: widget.sellingRate!,
+                  productDes: widget.productDes!,
+                  productImg: widget.imgPath!,
+                );
+                await checkFavoriteStatus();
+
+                isFav
+                    ? await FavoriteService().removeFavorite(product: model)
+                    : await FavoriteService().addFavorite(product: model);
+              },
               icon: Icon(
                 Icons.favorite,
-                color: kblack,
+                color: isFav ? kred : kblack,
                 size: 30,
               ))
         ],
@@ -45,21 +74,26 @@ class ProductDetailView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          kheight170,
+          kheight70,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(
-                image: AssetImage('$imgPath'),
+              SizedBox(
+                height: 250,
+                width: 380,
+                child: Image(
+                  image: NetworkImage('${widget.imgPath}'),
+                  fit: BoxFit.cover,
+                ),
               ),
             ],
           ),
           kheight20,
           Row(
             children: [
-              kwidth50,
+              kwidth25,
               Text(
-                '$productNames',
+                '${widget.productNames}',
                 style:
                     const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
@@ -67,15 +101,24 @@ class ProductDetailView extends StatelessWidget {
           ),
           Row(
             children: [
-              kwidth50,
+              kwidth25,
               Text(
-                '$productRate',
-                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                '₹${widget.productRate}',
+                style: const TextStyle(
+                    fontSize: 30, decoration: TextDecoration.lineThrough),
               ),
+              kwidth10,
+              Text(
+                '₹${widget.sellingRate}',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              )
             ],
           ),
           kheight20,
-          Center(child: Text('$productDes')),
+          Padding(
+            padding: const EdgeInsets.only(left: 25, right: 25),
+            child: Text('${widget.productDes}'),
+          ),
           kheight30,
           const Padding(
             padding: EdgeInsets.only(left: 30),
@@ -104,12 +147,35 @@ class ProductDetailView extends StatelessWidget {
             child: SizedBox(
               height: 50,
               width: 200,
-              child:
-                  ElevatedButton(onPressed: () {}, child: const Text('Add to Cart')),
+              child: ElevatedButton(
+                  onPressed: () {
+                    ProductModel model = ProductModel(
+                      productName: widget.productNames!,
+                      productPrice: widget.productRate!,
+                      discountPrice: widget.sellingRate!,
+                      productDes: widget.productDes!,
+                      productImg: widget.imgPath!,
+                    );
+                    CartService().addCart(product: model);
+                  },
+                  child: const Text('Add to Cart')),
             ),
           )
         ],
       ),
     );
+  }
+
+  checkFavoriteStatus() async {
+    final isFavoriteProduct = await FavoriteService().checkFav(
+        product: ProductModel(
+            productName: widget.productNames!,
+            productPrice: widget.productRate!,
+            discountPrice: widget.sellingRate!,
+            productDes: widget.productDes!,
+            productImg: widget.imgPath!));
+    setState(() {
+      isFav = isFavoriteProduct;
+    });
   }
 }

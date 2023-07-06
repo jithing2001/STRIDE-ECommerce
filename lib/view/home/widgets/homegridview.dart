@@ -25,20 +25,24 @@ class HomeGridView extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Container(
-                    width: 350,
-                    height: 140,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image(
-                        image: NetworkImage(
-                          '$imgPath',
+                  Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      width: 350,
+                      height: 140,
+                      decoration: BoxDecoration(
+                          // border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image(
+                          image: NetworkImage(
+                            '$imgPath',
+                          ),
+                          fit: BoxFit.cover,
+                          height: 120,
                         ),
-                        fit: BoxFit.cover,
-                        height: 120,
                       ),
                     ),
                   ),

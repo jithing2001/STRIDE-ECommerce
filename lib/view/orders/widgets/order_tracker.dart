@@ -1,16 +1,22 @@
+import 'dart:developer';
+
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/controllers/tracker_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:order_tracker/order_tracker.dart';
 
-class OrderTrackerClass extends StatefulWidget {
-  const OrderTrackerClass({Key? key}) : super(key: key);
+class OrderTrackerClass extends StatelessWidget {
+  OrderTrackerClass({Key? key}) : super(key: key);
 
-  @override
-  State<OrderTrackerClass> createState() => _MyHomePageState();
-}
+  List<Status> statusList = [
+    Status.order,
+    Status.shipped,
+    Status.outOfDelivery,
+    Status.delivered
+  ];
+  TrackerController track = TrackerController();
 
-class _MyHomePageState extends State<OrderTrackerClass> {
   List<TextDto> orderList = [
     TextDto("Your order has been placed", ""),
     TextDto("Seller processed your order", ""),
@@ -54,15 +60,25 @@ class _MyHomePageState extends State<OrderTrackerClass> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: OrderTracker(
-          status: Status.delivered,
-          activeColor: Colors.green,
-          inActiveColor: Colors.grey[300],
-          orderTitleAndDateList: orderList,
-          shippedTitleAndDateList: shippedList,
-          outOfDeliveryTitleAndDateList: outOfDeliveryList,
-          deliveredTitleAndDateList: deliveredList,
-        ),
+        child: Obx(() {
+          log(track.count.value.toString());
+          return OrderTracker(
+            status: statusList[track.count.value],
+            activeColor: Colors.green,
+            inActiveColor: Colors.grey[300],
+            orderTitleAndDateList: orderList,
+            shippedTitleAndDateList: shippedList,
+            outOfDeliveryTitleAndDateList: outOfDeliveryList,
+            deliveredTitleAndDateList: deliveredList,
+          );
+        }),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          log('message');
+          track.addTrack();
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

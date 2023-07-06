@@ -2,14 +2,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/view/home/widgets/homegridview.dart';
-import 'package:ecommerce/view/lists.dart';
 import 'package:ecommerce/view/popular_brands/popularbrands.dart';
-import 'package:ecommerce/view/popular_brands/widgets/adidas.dart';
-import 'package:ecommerce/view/popular_brands/widgets/converse.dart';
-import 'package:ecommerce/view/popular_brands/widgets/nike.dart';
-import 'package:ecommerce/view/popular_brands/widgets/puma.dart';
-import 'package:ecommerce/view/popular_brands/widgets/reebok.dart';
-import 'package:ecommerce/view/popular_brands/widgets/under_armour.dart';
+import 'package:ecommerce/view/popular_brands/widgets/brand_wise.dart';
 import 'package:ecommerce/view/productdetail/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,7 +28,7 @@ class HomeScreen extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                  Get.to(SettingsClass());
+                  Get.to(const SettingsClass());
                 },
                 icon: const Icon(
                   Icons.settings,
@@ -72,49 +66,38 @@ class HomeScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               kheight10,
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const NikeClass(),
-                    )),
-                    child: PopularBrands(
-                      imgpath: 'assets/images/nike-256.png',
-                    ),
-                  ),
-                  kwidth10,
-                  InkWell(
-                    onTap: () => Get.to(const AdidasClass()),
-                    child: PopularBrands(
-                        imgpath:
-                            'assets/images/Adidas-White-Logo-PNG-Clipart-Background.png'),
-                  ),
-                  kwidth10,
-                  InkWell(
-                    onTap: () => Get.to(const PumaClass()),
-                    child: PopularBrands(
-                        imgpath: 'assets/images/puma-logo-png-21175.png'),
-                  ),
-                  kwidth10,
-                  InkWell(
-                      onTap: () => Get.to(const ReebokClass()),
-                      child: PopularBrands(
-                          imgpath: 'assets/images/PngItem_1900489.png')),
-                  kwidth10,
-                  InkWell(
-                    onTap: () => Get.to(const UnderArmourClass()),
-                    child: PopularBrands(
-                        imgpath: 'assets/images/pngaaa.com-3430149.png'),
-                  ),
-                  kwidth10,
-                  InkWell(
-                    onTap: () => Get.to(const ConverseClass()),
-                    child: PopularBrands(
-                        imgpath:
-                            'assets/images/pngwing.com__8_-removebg-preview.png'),
-                  )
-                ],
+
+              SizedBox(
+                height: 70,
+                child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('myApp')
+                        .doc('Admin')
+                        .collection('Category')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.data == null) {
+                        return const CircularProgressIndicator();
+                      }
+                      return ListView.separated(
+                        separatorBuilder: (context, index) => kwidth10,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () => Get.to(BrandWise(
+                                title: snapshot.data!.docs[index]['category'])),
+                            child: PopularBrands(
+                              imgpath: snapshot.data!.docs[index]['image'],
+                              brandName: snapshot.data!.docs[index]['category'],
+                            ),
+                          );
+                        },
+                      );
+                    }),
               ),
+              //   ],
+              // ),
               kheight30,
               Expanded(
                   child: StreamBuilder(
@@ -140,10 +123,17 @@ class HomeScreen extends StatelessWidget {
                             return InkWell(
                               onTap: () {
                                 Get.to(ProductDetailView(
-                                    imgPath: imagePath[index],
-                                    productNames: productName[index],
-                                    productDes: productDescription[index],
-                                    productRate: productRate[index]));
+                                  imgPath: snapshot.data!.docs[index]
+                                      ['productImg'],
+                                  productNames: snapshot.data!.docs[index]
+                                      ['productName'],
+                                  productDes: snapshot.data!.docs[index]
+                                      ['productDes'],
+                                  productRate: snapshot.data!.docs[index]
+                                      ['productPrice'],
+                                  sellingRate: snapshot.data!.docs[index]
+                                      ['discountPrice'],
+                                ));
                                 log(index.toString());
                               },
                               child: HomeGridView(
@@ -152,7 +142,7 @@ class HomeScreen extends StatelessWidget {
                                 productName: snapshot.data!.docs[index]
                                     ['productName'],
                                 productRate: snapshot.data!.docs[index]
-                                    ['ProductPrice'],
+                                    ['discountPrice'],
                               ),
                             );
                           },

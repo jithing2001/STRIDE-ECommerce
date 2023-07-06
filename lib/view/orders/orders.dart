@@ -25,7 +25,7 @@ class MyOrders extends StatelessWidget {
           itemCount: 10,
           itemBuilder: (context, index) {
             return InkWell(
-              onTap: () => Get.to(const OrderTrackerClass()),
+              onTap: () => Get.to( OrderTrackerClass()),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Container(

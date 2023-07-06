@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 
 class PopularBrands extends StatelessWidget {
   String? imgpath;
-  PopularBrands({super.key, required this.imgpath});
+  String? brandName;
+  PopularBrands({super.key, required this.imgpath, required this.brandName});
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 25,
-      backgroundColor: Colors.black,
-      child: Image(
-        image: AssetImage('$imgpath'),
-        height: 30,
-      ),
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 25,
+          backgroundColor: Colors.black,
+          child: Image(
+            image: NetworkImage('$imgpath'),
+            height: 30,
+          ),
+        ),
+        Text('$brandName')
+      ],
     );
   }
 }
