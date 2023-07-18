@@ -3,18 +3,26 @@ import 'dart:developer';
 import 'package:get/get.dart';
 
 class QuantityController extends GetxController {
-  // RxInt number = 1.obs;
-  RxInt count = 1.obs;
+  RxInt total = 0.obs;
+  List<int> priceList = [];
 
-  addQuantity() {
-    // number++;
-
-    count.value++;
-    log('${count.value}');
+  void findTotal() {
+    for (int x in priceList) {
+      total = total + x;
+    }
+    log(total.toString());
+    update();
   }
 
-  removeQuantity() {
-    // number--;
-    count.value--;
+  void addTotal(int price) {
+    total += price;
+    log(total.toString());
+    update();
+  }
+
+  void removeTotal(int price) {
+    total -= price;
+    log(total.toString());
+    update();
   }
 }

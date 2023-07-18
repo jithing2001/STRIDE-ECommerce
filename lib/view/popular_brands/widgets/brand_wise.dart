@@ -31,6 +31,9 @@ class BrandWise extends StatelessWidget {
                   .where('productCategory', isEqualTo: title)
                   .snapshots(),
               builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return const Center(child: CircularProgressIndicator());
+                }
                 return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,

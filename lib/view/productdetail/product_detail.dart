@@ -1,7 +1,10 @@
+import 'dart:developer';
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/model/cart_model.dart';
 import 'package:ecommerce/model/product_model.dart';
 import 'package:ecommerce/service/cartservice.dart';
 import 'package:ecommerce/service/favorite_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -28,10 +31,16 @@ class ProductDetailView extends StatefulWidget {
 }
 
 class _ProductDetailViewState extends State<ProductDetailView> {
+  int? size;
   bool isFav = false;
+  bool isCart = false;
+     final currentemail = FirebaseAuth.instance.currentUser!.email;
   @override
   Widget build(BuildContext context) {
+ 
+
     checkFavoriteStatus();
+    checkCartStatus();
 
     return Scaffold(
       backgroundColor: kwhite,
@@ -49,7 +58,6 @@ class _ProductDetailViewState extends State<ProductDetailView> {
         actions: [
           IconButton(
               onPressed: () async {
-                
                 ProductModel model = ProductModel(
                   productName: widget.productNames!,
                   productPrice: widget.productRate!,
@@ -110,7 +118,8 @@ class _ProductDetailViewState extends State<ProductDetailView> {
               kwidth10,
               Text(
                 '₹${widget.sellingRate}',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               )
             ],
           ),
@@ -131,15 +140,35 @@ class _ProductDetailViewState extends State<ProductDetailView> {
           Row(
             children: [
               kwidth30,
-              ProductSize(
-                size: '8',
+              InkWell(
+                onTap: () {
+                  size = 8;
+                },
+                child: ProductSize(
+                  size: '8',
+                ),
               ),
               kwidth10,
-              ProductSize(size: '9'),
+              InkWell(
+                onTap: () => size = 9,
+                child: ProductSize(
+                  size: '9',
+                ),
+              ),
               kwidth10,
-              ProductSize(size: '10'),
+              InkWell(
+                onTap: () => size = 10,
+                child: ProductSize(
+                  size: '10',
+                ),
+              ),
               kwidth10,
-              ProductSize(size: '11')
+              InkWell(
+                onTap: () => size = 11,
+                child: ProductSize(
+                  size: '11',
+                ),
+              ),
             ],
           ),
           kheight30,
@@ -148,17 +177,23 @@ class _ProductDetailViewState extends State<ProductDetailView> {
               height: 50,
               width: 200,
               child: ElevatedButton(
-                  onPressed: () {
-                    ProductModel model = ProductModel(
-                      productName: widget.productNames!,
-                      productPrice: widget.productRate!,
-                      discountPrice: widget.sellingRate!,
-                      productDes: widget.productDes!,
-                      productImg: widget.imgPath!,
-                    );
-                    CartService().addCart(product: model);
+                  onPressed: () async {
+                    CartModel model = CartModel(
+                        discountPrice: widget.sellingRate!,
+                        productDes: widget.productDes!,
+                        productImg: widget.imgPath!,
+                        productName: widget.productNames!,
+                        productSize: size.toString(),
+                        currentUser: currentemail.toString());
+
+                    await checkCartStatus();
+
+                    isCart
+                        ? await CartService().removeCart(product: model)
+                        : await CartService().addCart(product: model);
                   },
-                  child: const Text('Add to Cart')),
+                  child:
+                      isCart ? Text('Remove from Cart') : Text('Add to Cart')),
             ),
           )
         ],
@@ -176,6 +211,20 @@ class _ProductDetailViewState extends State<ProductDetailView> {
             productImg: widget.imgPath!));
     setState(() {
       isFav = isFavoriteProduct;
+    });
+  }
+
+  checkCartStatus() async {
+    final isCartProduct = await CartService().checkcart(
+        product: CartModel(
+            productName: widget.productNames!,
+            productDes: widget.productDes!,
+            productSize: size.toString(),
+            discountPrice: widget.sellingRate!,
+            productImg: widget.imgPath!,currentUser: currentemail.toString()));
+    setState(() {
+      isCart = isCartProduct;
+      log(isCart.toString());
     });
   }
 }

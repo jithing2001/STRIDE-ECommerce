@@ -2,20 +2,38 @@ import 'package:ecommerce/constants.dart';
 import 'package:flutter/material.dart';
 
 class ShippingFields extends StatelessWidget {
-  String? detail;
+  final String? name;
+  final String? area;
+  final String? district;
+  final String? state;
+  final String? pincode;
 
-  ShippingFields({super.key, required this.detail});
+  ShippingFields(
+      {super.key,
+      required this.name,
+      required this.area,
+      required this.district,
+      required this.state,
+      required this.pincode});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        kwidth20,
-        Text(
-          '$detail',
-          style: const TextStyle(fontSize: 18),
-        ),
-      ],
-    );
+    return (name != null &&
+            area != null &&
+            district != null &&
+            state != null &&
+            pincode != null)
+        ? Row(
+            children: [
+              kwidth20,
+              Text(
+                " $name \n $district \n $state \n $area \n $pincode ",
+                style: const TextStyle(fontSize: 18),
+              ),
+            ],
+          )
+        : Center(
+            child: Text('Add address'),
+          );
   }
 }

@@ -1,36 +1,46 @@
+import 'package:ecommerce/constants.dart';
 import 'package:flutter/material.dart';
 
 class PaymentsWidgets extends StatelessWidget {
   String? imgPath;
   String? payments;
-  IconData? icon;
 
-  PaymentsWidgets(
-      {super.key,
-      required this.imgPath,
-      required this.payments,
-      required this.icon});
+  PaymentsWidgets({
+    super.key,
+    required this.imgPath,
+    required this.payments,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
+        Container(
           height: 40,
-          width: 40,
-          child: Image(
-            image: AssetImage('$imgPath'),
-            fit: BoxFit.cover,
+          width: 300,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: kblue,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 40,
+                width: 40,
+                child: Image(
+                  image: AssetImage('$imgPath'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Text(
+                '$payments',
+                style: TextStyle(fontSize: 25, color: kwhite),
+              ),
+            ],
           ),
         ),
-        Text(
-          '$payments',
-          style: const TextStyle(
-            fontSize: 25,
-          ),
-        ),
-        IconButton(onPressed: () {}, icon: Icon(icon))
       ],
     );
   }

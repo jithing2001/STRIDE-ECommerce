@@ -7,6 +7,7 @@ import 'package:ecommerce/view/user/signup/usersignup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class UserLogin extends StatelessWidget {
   UserLogin({super.key});
@@ -58,6 +59,10 @@ class UserLogin extends StatelessWidget {
             onPressed: () {
               if (mailController.text.isNotEmpty &&
                   passwordController.text.isNotEmpty) {
+                    Get.dialog(Center(
+                                  child: LoadingAnimationWidget.waveDots(
+                                      color: Colors.white, size: 50),
+                                ));
                 Authentication()
                     .signInWithEmailAndPassword(
                         mailController.text, passwordController.text)

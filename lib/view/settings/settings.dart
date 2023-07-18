@@ -30,8 +30,41 @@ class SettingsClass extends StatelessWidget {
           SettingsWidget(icon: Icons.event_note, title: 'Terms and Conditions'),
           InkWell(
               onTap: () {
-                Authentication().signOut();
-                Get.offAll(UserLogin());
+                Get.dialog(AlertDialog(
+                  content: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Column(
+                      children: [
+                        const Text('Are you sure?'),
+                        kheight30,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                                onTap: () async {
+                                  await Authentication().signOut();
+                                  Get.offAll(UserLogin());
+                                },
+                                child: const Text(
+                                  'Yes',
+                                  style: TextStyle(
+                                      fontSize: 22, color: Colors.green),
+                                )),
+                            kwidth30,
+                            InkWell(
+                                onTap: () => Get.back(),
+                                child: const Text(
+                                  'No',
+                                  style: TextStyle(
+                                      fontSize: 22, color: Colors.red),
+                                )),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ));
               },
               child: SettingsWidget(icon: Icons.logout, title: 'Log Out')),
         ],

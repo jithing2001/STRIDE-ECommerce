@@ -9,8 +9,8 @@ class FavoriteService {
   addFavorite({required ProductModel product}) async {
     final favorite = FirebaseFirestore.instance
         .collection('users')
-        .doc(currentemail)
-        .collection('favorites')
+        .doc('favorites')
+        .collection(currentemail!)
         .doc(product.productName);
 
     final json = product.toJson();
@@ -23,8 +23,8 @@ class FavoriteService {
   Future<bool> checkFav({required ProductModel product}) async {
     final favorite = FirebaseFirestore.instance
         .collection('users')
-        .doc(currentemail)
-        .collection('favorites')
+        .doc('favorites')
+        .collection(currentemail!)
         .doc(product.productName);
 
     final snapshot = await favorite.get();
@@ -35,8 +35,8 @@ class FavoriteService {
     // print(product.productName);
     final favorite = FirebaseFirestore.instance
         .collection('users')
-        .doc(currentemail)
-        .collection('favorites')
+        .doc('favorites')
+        .collection(currentemail!)
         .doc(product.productName);
 
     await favorite.delete();

@@ -5,6 +5,7 @@ import 'package:ecommerce/view/user/login/userlogin.dart';
 import 'package:ecommerce/view/user/signup/widgets/signupfields.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class UserSignUp extends StatelessWidget {
   const UserSignUp({super.key});
@@ -65,6 +66,10 @@ class UserSignUp extends StatelessWidget {
                   onPressed: () {
                     if (mailController.text.isNotEmpty &&
                         passwordController.text.isNotEmpty) {
+                          Get.dialog(Center(
+                                  child: LoadingAnimationWidget.waveDots(
+                                      color: Colors.white, size: 50),
+                                ));
                       Authentication()
                           .registerWithEmailAndPassword(mailController.text,
                               passwordController.text, nameController.text,phoneController.text)
