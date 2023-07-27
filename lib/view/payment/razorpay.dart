@@ -1,28 +1,37 @@
 import 'dart:developer';
-import 'package:ecommerce/model/order_model.dart';
+import 'package:ecommerce/service/cartservice.dart';
 import 'package:ecommerce/service/my_order_service.dart';
 import 'package:ecommerce/view/orders/orders.dart';
+import 'package:ecommerce/view/success/success.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class Razor {
-  OrderModel order;
-  Razor({required this.order});
+  final orderList;
+  Razor({required this.orderList});
 
   Razorpay razorpay = Razorpay();
+  var sum = 00.00;
+
+  totalamount() {
+    for (var element in orderList) {
+      sum = sum + int.parse(element.discountPrice);
+    }
+  }
 
   pay() {
+    totalamount();
     var options = {
       'key': 'rzp_test_8caRwcuFY7rVRL',
-      'amount': (int.parse(order.discountPrice)),
+      'amount': sum,
       'name': 'Stride',
-      'description': int.parse(order.discountPrice) + 200 * 100,
+      'description': sum,
       'retry': {'enabled': true, 'max_count': 1},
       'send_sms_hash': true,
       'prefill': {'contact': '7025778330', 'email': 'jithinkyd70@gmail.com'},
       'external': {
-      'wallets': ['paytm']
+        'wallets': ['paytm']
       }
     };
 
@@ -34,10 +43,8 @@ class Razor {
 
   void handlePaymentErrorResponse(
       PaymentFailureResponse response, BuildContext context) {
-    Get.dialog(Alert(
-      title: 'payment Failed',
-      msg1: response.code,
-      msg2: response.message,
+    Get.dialog(const AlertDialog(
+      content: Text('payment failed'),
     ));
   }
 
@@ -45,47 +52,18 @@ class Razor {
     PaymentSuccessResponse response,
   ) async {
     log(response.toString());
-    await MyOrderService().addOrder(order);
-    log(order.productName);
+    for (var order in orderList) {
+      await MyOrderService().addOrder(order);
+    }
     log('success');
-    Get.dialog(Alert(
-      title: 'You Order Successfull',
-      msg1: 'check MyOrder for more details',
-      msg2: 'thank you',
-    ));
+    await CartService().deleteWholeCart();
+    Get.to(const Success());
   }
 
   void handleExternalWalletSelected(
       ExternalWalletResponse response, BuildContext context) async {
-    Get.dialog(Alert(
-        title: 'External Wallet Selected', msg1: 'Selected', msg2: 'Selected'));
-  }
-}
-
-class Alert extends StatelessWidget {
-  String title;
-  final msg1;
-  final msg2;
-  Alert(
-      {super.key, required this.title, required this.msg1, required this.msg2});
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(title),
-      content: Text('$msg1\n$msg2'),
-      actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  Get.to(MyOrders());
-                },
-                child: const Text('Enter'))
-          ],
-        )
-      ],
-    );
+    Get.dialog(const AlertDialog(
+      content: Text('selected wallet'),
+    ));
   }
 }

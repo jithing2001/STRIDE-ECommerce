@@ -1,4 +1,3 @@
-
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/model/address_model.dart';
 import 'package:ecommerce/service/address_service.dart';
@@ -77,6 +76,7 @@ class AddAddress extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: kblack),
                       onPressed: () async {
                         if (formkey.currentState!.validate()) {
                           await AddressServices().addAddress(

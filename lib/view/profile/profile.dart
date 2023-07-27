@@ -80,6 +80,8 @@ class Profile extends StatelessWidget {
                   kheight20,
                   Center(
                     child: ElevatedButton(
+                        style:
+                            ElevatedButton.styleFrom(backgroundColor: kblack),
                         onPressed: () {
                           Get.dialog(AlertDialog(
                             backgroundColor: kwhite,
@@ -106,6 +108,8 @@ class Profile extends StatelessWidget {
                                       hint: 'Enter a new number'),
                                   kheight10,
                                   ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: kblack),
                                       onPressed: () {},
                                       child: IconButton(
                                           onPressed: () async {

@@ -8,7 +8,7 @@ class ShippingFields extends StatelessWidget {
   final String? state;
   final String? pincode;
 
-  ShippingFields(
+  const ShippingFields(
       {super.key,
       required this.name,
       required this.area,
@@ -32,7 +32,7 @@ class ShippingFields extends StatelessWidget {
               ),
             ],
           )
-        : Center(
+        : const Center(
             child: Text('Add address'),
           );
   }

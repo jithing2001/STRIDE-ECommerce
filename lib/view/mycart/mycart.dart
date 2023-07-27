@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/controllers/quantity_controller.dart';
 import 'package:ecommerce/model/cart_model.dart';
-import 'package:ecommerce/model/product_model.dart';
 import 'package:ecommerce/service/cartservice.dart';
 import 'package:ecommerce/view/checkout/checkout.dart';
 import 'package:ecommerce/view/productdetail/product_detail.dart';
@@ -16,7 +15,7 @@ import 'package:get/get.dart';
 class MyCart extends StatelessWidget {
   MyCart({Key? key}) : super(key: key);
 
-  QuantityController quantityController = Get.put(QuantityController());
+  TotalController totalController = Get.put(TotalController());
 
   @override
   Widget build(BuildContext context) {
@@ -53,31 +52,32 @@ class MyCart extends StatelessWidget {
                     );
                   } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
                     // Update the total value in the controller
-                    quantityController.total.value = 0;
+                    totalController.total.value = 0;
 
                     return const Center(
                       child: Text('Cart is empty'),
                     );
                   }
-                  quantityController.priceList.clear();
-                  quantityController.total.value = 0;
+                  totalController.priceList.clear();
+                  totalController.total.value = 0;
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
-                      // quantityController.addTotal(
-                      //     int.parse(snapshot.data!.docs[index]['price']));
-                      quantityController.priceList
-                          .add(int.parse(snapshot.data!.docs[index]['price']));
+                      List<CartModel> allCartModel = [];
+                      allCartModel.addAll(snapshot.data!.docs.map((e) =>
+                          CartModel.fromJson(
+                              e.data() as Map<String, dynamic>)));
                       return Padding(
                         padding: const EdgeInsets.all(10),
                         child: InkWell(
                           onTap: () => Get.to(ProductDetailView(
-                            imgPath: snapshot.data!.docs[index]['image'],
-                            productNames: snapshot.data!.docs[index]
-                                ['productName'],
-                            productDes: snapshot.data!.docs[index]['des'],
-                            productRate: snapshot.data!.docs[index]['price'],
-                            sellingRate: snapshot.data!.docs[index]['price'],
+                            imgPath1: allCartModel[index].productImg1,
+                            imgPath2: allCartModel[index].productImg2,
+                            imgPath3: allCartModel[index].productImg3,
+                            productNames: allCartModel[index].productName,
+                            productDes: allCartModel[index].productDes,
+                            productRate: allCartModel[index].discountPrice,
+                            sellingRate: allCartModel[index].discountPrice,
                           )),
                           child: Container(
                             height: 100,
@@ -93,19 +93,20 @@ class MyCart extends StatelessWidget {
                                   width: 100,
                                   child: Image(
                                     image: NetworkImage(
-                                      '${snapshot.data!.docs[index]['image']}',
+                                      '${allCartModel[index].productImg1}',
                                     ),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                                 const SizedBox(width: 30),
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
                                       width: 210,
                                       child: Text(
-                                        '${snapshot.data!.docs[index]['productName']}',
+                                        '${allCartModel[index].productName}',
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -113,7 +114,7 @@ class MyCart extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '₹${snapshot.data!.docs[index]['price']}',
+                                      '₹${allCartModel[index].discountPrice}',
                                       style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -121,7 +122,7 @@ class MyCart extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
-                                      'Size: ${snapshot.data!.docs[index]['size']}',
+                                      'Size: ${allCartModel[index].productSize}',
                                       style: TextStyle(color: kblack),
                                     ),
                                   ],
@@ -131,18 +132,22 @@ class MyCart extends StatelessWidget {
                                   onPressed: () async {
                                     await CartService().removeCart(
                                         product: CartModel(
-                                      productName: snapshot.data!.docs[index]
-                                          ['productName'],
-                                      productDes: snapshot.data!.docs[index]
-                                          ['des'],
-                                      productSize: snapshot.data!.docs[index]
-                                          ['size'],
-                                      discountPrice: snapshot.data!.docs[index]
-                                          ['price'],
-                                      productImg: snapshot.data!.docs[index]
-                                          ['image'],
-                                      currentUser: snapshot.data!.docs[index]
-                                          ['user'],
+                                      productName:
+                                          allCartModel[index].productName,
+                                      productDes:
+                                          allCartModel[index].productDes,
+                                      productSize:
+                                          allCartModel[index].productSize,
+                                      discountPrice:
+                                          allCartModel[index].discountPrice,
+                                      productImg1:
+                                          allCartModel[index].productImg1,
+                                      productImg2:
+                                          allCartModel[index].productImg2,
+                                      productImg3:
+                                          allCartModel[index].productImg3,
+                                      currentUser:
+                                          allCartModel[index].currentUser,
                                     ));
                                   },
                                   icon: const Icon(Icons.delete),
@@ -158,7 +163,7 @@ class MyCart extends StatelessWidget {
               ),
             ),
             CheckoutSection(
-                totalList: quantityController.priceList,
+                totalList: totalController.priceList,
                 currentEmail: currentEmail),
           ],
         ),
@@ -229,7 +234,7 @@ class CheckoutSection extends StatelessWidget {
                     }
 
                     return Text(
-                      '$total',
+                      '₹$total',
                       // "${quantityController.total.value}",
                       style: TextStyle(
                         fontSize: 30,
@@ -246,13 +251,20 @@ class CheckoutSection extends StatelessWidget {
             height: 40,
             width: 150,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: kwhite,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
               onPressed: () {
-                log('${totalList}');
+                log('$totalList');
                 Get.to(Checkout(
                   total: total,
                 ));
               },
-              child: const Text('Checkout'),
+              child: Text(
+                'Checkout',
+                style: TextStyle(color: kblack),
+              ),
             ),
           ),
         ],

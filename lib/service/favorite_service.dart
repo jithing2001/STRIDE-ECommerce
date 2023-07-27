@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce/model/fav_model.dart';
 import 'package:ecommerce/model/product_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -6,7 +7,7 @@ import 'package:get/get.dart';
 class FavoriteService {
   final currentemail = FirebaseAuth.instance.currentUser!.email;
 
-  addFavorite({required ProductModel product}) async {
+  addFavorite({required favModel product}) async {
     final favorite = FirebaseFirestore.instance
         .collection('users')
         .doc('favorites')
@@ -20,7 +21,7 @@ class FavoriteService {
     Get.snackbar('success', 'added');
   }
 
-  Future<bool> checkFav({required ProductModel product}) async {
+  Future<bool> checkFav({required favModel product}) async {
     final favorite = FirebaseFirestore.instance
         .collection('users')
         .doc('favorites')
@@ -31,7 +32,7 @@ class FavoriteService {
     return snapshot.exists;
   }
 
-  removeFavorite({required ProductModel product}) async {
+  removeFavorite({required favModel product}) async {
     // print(product.productName);
     final favorite = FirebaseFirestore.instance
         .collection('users')

@@ -16,65 +16,62 @@ class HomeGridView extends StatelessWidget {
     return FractionallySizedBox(
       widthFactor: 1,
       heightFactor: 1,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: SizedBox(
-          height: 200,
-          width: 350,
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      width: 350,
-                      height: 140,
-                      decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.black),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image(
-                          image: NetworkImage(
-                            '$imgPath',
-                          ),
-                          fit: BoxFit.cover,
-                          height: 120,
-                        ),
-                      ),
+      child: Container(
+        // height: 400,
+        width: 200,
+        decoration: BoxDecoration(
+            border: Border.all(color: kblack),
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  width: 200,
+                  height: 160,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
+                  clipBehavior: Clip.antiAlias,
+                  child: Image(
+                    image: NetworkImage(
+                      '$imgPath',
                     ),
+                    fit: BoxFit.cover,
+                    // height: 120,
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  kwidth20,
-                  SizedBox(
-                    width: 170,
-                    child: Text(
-                      '$productName',
-                      style: const TextStyle(
-                          fontSize: 19, fontWeight: FontWeight.bold),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  kwidth20,
-                  Text(
-                    '₹$productRate',
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                kwidth20,
+                SizedBox(
+                  width: 165,
+                  child: Text(
+                    '$productName',
                     style: const TextStyle(
                         fontSize: 19, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ],
-              )
-            ],
-          ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                kwidth20,
+                Text(
+                  '₹$productRate',
+                  style: const TextStyle(
+                      fontSize: 19, fontWeight: FontWeight.bold),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );

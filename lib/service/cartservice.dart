@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 class CartService {
   final currentemail = FirebaseAuth.instance.currentUser!.email;
-  QuantityController quantityController = Get.put(QuantityController());
+  TotalController totalController = Get.put(TotalController());
 
   addCart({required CartModel product}) async {
     final cart = FirebaseFirestore.instance
@@ -16,9 +16,10 @@ class CartService {
         .doc(product.productName);
 
     final json = product.toJson();
-    quantityController.addTotal(int.parse(product.discountPrice));
+    totalController.addTotal(int.parse(product.discountPrice));
 
     await cart.set(json);
+    Get.snackbar('Success', 'Product added to cart');
   }
 
   Future<bool> checkcart({required CartModel product}) async {
@@ -39,7 +40,7 @@ class CartService {
         .collection(currentemail!)
         .doc(product.productName);
 
-    quantityController.removeTotal(int.parse(product.discountPrice));
+    totalController.removeTotal(int.parse(product.discountPrice));
 
     await cart.delete();
 

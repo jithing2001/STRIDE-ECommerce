@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/model/order_model.dart';
 import 'package:ecommerce/view/bottomnavigation.dart';
+import 'package:ecommerce/view/orders/order_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +39,8 @@ class MyOrders extends StatelessWidget {
             stream: FirebaseFirestore.instance
                 .collection('users')
                 .doc('myorder')
-                .collection(currentemail!)
+                .collection('allOrders')
+                .where('user', isEqualTo: currentemail)
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -48,10 +51,14 @@ class MyOrders extends StatelessWidget {
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
-                  return InkWell(
-                    // onTap: () => Get.to(OrderTrackerClass()),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                  List<OrderModel> allOrderModel = [];
+                  allOrderModel.addAll(snapshot.data!.docs
+                      .map((e) => OrderModel.fromJson(e.data())));
+                  return Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: InkWell(
+                      onTap: () => Get.to(
+                          Order_Detail(order: allOrderModel[index])),
                       child: Container(
                         height: 80,
                         width: double.infinity,
@@ -66,25 +73,26 @@ class MyOrders extends StatelessWidget {
                               width: 60,
                               child: Image(
                                 image: NetworkImage(
-                                    snapshot.data!.docs[index]['image']),
+                                    allOrderModel[index].productImg1),
                                 fit: BoxFit.fill,
                               ),
                             ),
                             kwidth30,
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
                                   width: 230,
                                   child: Text(
-                                    snapshot.data!.docs[index]['productName'],
+                                    allOrderModel[index].productName,
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                Text(snapshot.data!.docs[index]['status'])
+                                Text(allOrderModel[index].deliveryStatus)
                               ],
                             ),
                           ],

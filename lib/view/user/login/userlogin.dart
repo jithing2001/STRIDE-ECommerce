@@ -24,8 +24,8 @@ class UserLogin extends StatelessWidget {
           const Center(
               child: Image(
             image: AssetImage('assets/images/Blogpost-image.png'),
-            height: 300,
-            width: 250,
+            height: 350,
+            width: 270,
           )),
           const Padding(
             padding: EdgeInsets.all(8.0),
@@ -43,26 +43,16 @@ class UserLogin extends StatelessWidget {
               controller: passwordController,
               title: 'Password',
               hint: 'Enter your Password'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text(
-                'forgot password',
-                style: TextStyle(fontSize: 17, color: Colors.blue),
-              ),
-              kwidth20
-            ],
-          ),
           kheight10,
           loginbottonwidget(
             title: 'Sign In',
             onPressed: () {
               if (mailController.text.isNotEmpty &&
                   passwordController.text.isNotEmpty) {
-                    Get.dialog(Center(
-                                  child: LoadingAnimationWidget.waveDots(
-                                      color: Colors.white, size: 50),
-                                ));
+                Get.dialog(Center(
+                  child: LoadingAnimationWidget.waveDots(
+                      color: Colors.white, size: 50),
+                ));
                 Authentication()
                     .signInWithEmailAndPassword(
                         mailController.text, passwordController.text)
@@ -87,10 +77,9 @@ class UserLogin extends StatelessWidget {
             child: loginbottonwidget(
               title: 'Continue with Google',
               onPressed: () async {
-                UserCredential _cred =
-                    await Authentication().signInWithGoogle();
+                UserCredential cred = await Authentication().signInWithGoogle();
 
-                if (_cred != null) {
+                if (cred != null) {
                   Get.to(BottomNavigationClass());
                 } else {
                   Get.snackbar('error', 'User null');

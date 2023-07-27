@@ -10,9 +10,11 @@ import 'package:ecommerce/view/checkout/widgets/shipping_address_widget.dart';
 import 'package:ecommerce/view/checkout/widgets/shipping_addresses.dart';
 import 'package:ecommerce/view/orders/orders.dart';
 import 'package:ecommerce/view/payment/razorpay.dart';
+import 'package:ecommerce/view/success/success.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 String address = '';
 
@@ -135,7 +137,7 @@ class Checkout extends StatelessWidget {
                       const Spacer(),
                       IconButton(
                           onPressed: () {
-                            Get.to(ShippingAddress());
+                            Get.to(const ShippingAddress());
                           },
                           icon: const Icon(
                             Icons.add_location_alt_rounded,
@@ -185,7 +187,7 @@ class Checkout extends StatelessWidget {
                                       width: 100,
                                       child: Image(
                                         image: NetworkImage(snapshot
-                                            .data!.docs[index]['image']),
+                                            .data!.docs[index]['image1']),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -193,6 +195,8 @@ class Checkout extends StatelessWidget {
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           width: 210,
@@ -206,7 +210,7 @@ class Checkout extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                            snapshot.data!.docs[index]['price'],
+                                            "₹${snapshot.data!.docs[index]['price']}",
                                             style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold)),
@@ -250,17 +254,16 @@ class Checkout extends StatelessWidget {
                                   productDes: x['des'],
                                   productSize: x['size'],
                                   discountPrice: x['price'],
-                                  productImg: x['image'],
+                                  productImg1: x['image1'],
+                                  productImg2: x['image2'],
+                                  productImg3: x['image3'],
                                   currentUser: x['user'],
                                   address: address,
-                                  deliveryStatus: 'active',
+                                  deliveryStatus: 'pending',
                                 );
                                 orderList.add(ordery!);
 
-                                await Razor(order: ordery!).pay();
-                                for (var order in orderList) {
-                                  await MyOrderService().addOrder(order);
-                                }
+                                await Razor(orderList: orderList).pay();
                               }
                             },
                             child: PaymentsWidgets(
@@ -270,23 +273,33 @@ class Checkout extends StatelessWidget {
                           kheight20,
                           InkWell(
                             onTap: () async {
+                              log('cod');
+                              Get.dialog(Center(
+                                child: LoadingAnimationWidget.waveDots(
+                                    color: Colors.white, size: 50),
+                              ));
                               for (var x in tmp) {
                                 ordery = OrderModel(
                                   productName: x['productName'],
                                   productDes: x['des'],
                                   productSize: x['size'],
                                   discountPrice: x['price'],
-                                  productImg: x['image'],
+                                  productImg1: x['image1'],
+                                  productImg2: x['image2'],
+                                  productImg3: x['image3'],
                                   currentUser: x['user'],
                                   address: address,
-                                  deliveryStatus: 'active',
+                                  deliveryStatus: 'pending',
                                 );
+                                log('looping');
                                 await MyOrderService().addOrder(ordery!);
                               }
+                              log('added');
 
                               await CartService().deleteWholeCart();
+                              log('deleted');
 
-                              Get.to(const MyOrders());
+                              Get.to(const Success());
                             },
                             child: PaymentsWidgets(
                                 imgPath: 'assets/images/pngwing.com (7).png',
@@ -299,15 +312,15 @@ class Checkout extends StatelessWidget {
                               const Text(
                                 'Total',
                                 style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold),
+                                    fontSize: 21, fontWeight: FontWeight.bold),
                               ),
                               kwidth30,
                               Text(
-                                '$total',
+                                '₹$total',
                                 style: TextStyle(
                                     fontSize: 27,
                                     fontWeight: FontWeight.bold,
-                                    color: kblue),
+                                    color: kblack),
                               )
                             ],
                           ),

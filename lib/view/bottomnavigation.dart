@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BottomNavigationClass extends StatelessWidget {
-  BottomNavigationClass({Key? key});
+  BottomNavigationClass({super.key});
 
   final NavController controller = Get.put(NavController());
 
   final List<Widget> pages = [
-    const HomeScreen(),
+     HomeScreen(),
     const MyOrders(),
     MyCart(),
      Favorites(),
@@ -52,6 +52,7 @@ class BottomNavigationClass extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite, color: Colors.black),
+              
               label: 'Favorites',
             ),
             BottomNavigationBarItem(

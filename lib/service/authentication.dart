@@ -22,7 +22,7 @@ class Authentication {
         'name': name,
         'phone Number': number,
       });
-      print('userCredential : ${userCredential}');
+      print('userCredential : $userCredential');
       return true;
     } on FirebaseException catch (e) {
       print('Error during registration: $e');
@@ -37,7 +37,7 @@ class Authentication {
         email: email,
         password: password,
       );
-      print('userCredential : ${userCredential}');
+      print('userCredential : $userCredential');
       return true;
     } catch (e) {
       print('Error during sign-in: $e');

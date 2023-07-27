@@ -21,13 +21,13 @@ class PaymentsWidgets extends StatelessWidget {
           width: 300,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: kblue,
+            color: kblack,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 40,
+                height: 35,
                 width: 40,
                 child: Image(
                   image: AssetImage('$imgPath'),

@@ -9,8 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 int selectedIndex = -1;
+
 class ShippingAddress extends StatefulWidget {
-  ShippingAddress({super.key});
+  const ShippingAddress({super.key});
 
   @override
   State<ShippingAddress> createState() => _ShippingAddressState();
@@ -82,13 +83,14 @@ class _ShippingAddressState extends State<ShippingAddress> {
                                 state: snapshot.data!.docs[index]['state'],
                                 pincode: snapshot.data!.docs[index]['pincode']),
                           )
-                        : Center(
+                        : const Center(
                             child: Text('loading...'),
                           ));
               },
             );
           }),
       floatingActionButton: FloatingActionButton(
+          backgroundColor: kblack,
           onPressed: () async {
             Get.to(AddAddress());
           },

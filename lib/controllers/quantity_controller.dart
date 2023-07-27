@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 
-class QuantityController extends GetxController {
+class TotalController extends GetxController {
   RxInt total = 0.obs;
   List<int> priceList = [];
 

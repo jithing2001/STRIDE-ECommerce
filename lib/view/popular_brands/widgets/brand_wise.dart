@@ -37,13 +37,16 @@ class BrandWise extends StatelessWidget {
                 return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
+                      childAspectRatio: 0.9,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10),
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
                         Get.to(ProductDetailView(
-                          imgPath: snapshot.data!.docs[index]['productImg'],
+                          imgPath1: snapshot.data!.docs[index]['productImg1'],
+                          imgPath2: snapshot.data!.docs[index]['productImg2'],
+                          imgPath3: snapshot.data!.docs[index]['productImg3'],
                           productDes: snapshot.data!.docs[index]['productDes'],
                           productNames: snapshot.data!.docs[index]
                               ['productName'],
@@ -54,7 +57,7 @@ class BrandWise extends StatelessWidget {
                         ));
                       },
                       child: HomeGridView(
-                          imgPath: snapshot.data!.docs[index]['productImg'],
+                          imgPath: snapshot.data!.docs[index]['productImg1'],
                           productName: snapshot.data!.docs[index]
                               ['productName'],
                           productRate: snapshot.data!.docs[index]

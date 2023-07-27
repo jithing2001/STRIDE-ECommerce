@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/model/fav_model.dart';
 import 'package:ecommerce/model/product_model.dart';
 import 'package:ecommerce/service/favorite_service.dart';
 import 'package:ecommerce/view/productdetail/product_detail.dart';
@@ -29,26 +30,35 @@ class Favorites extends StatelessWidget {
               .collection(currentemail!)
               .snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.data == null) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
+            }
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Center(
+                child: Text("No favorites found."),
+              );
             }
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 final favorite = snapshot.data!.docs[index].data();
-
-                final product = ProductModel.fromJson(favorite);
+                final product = favModel.fromJson(favorite);
+                    List<favModel> allFavModel = [];
+                      allFavModel.addAll(snapshot.data!.docs.map((e) =>
+                          favModel.fromJson(
+                              e.data() as Map<String, dynamic>)));
 
                 return Padding(
                   padding: const EdgeInsets.all(10),
                   child: InkWell(
                     onTap: () => Get.to(ProductDetailView(
-                        imgPath: snapshot.data!.docs[index]['productImg'],
-                        productNames: snapshot.data!.docs[index]['productName'],
-                        productDes: snapshot.data!.docs[index]['productDes'],
-                        productRate: snapshot.data!.docs[index]['productPrice'],
-                        sellingRate: snapshot.data!.docs[index]
-                            ['discountPrice'])),
+                        imgPath1: allFavModel[index].productImg1,
+                        imgPath2: allFavModel[index].productImg2,
+                        imgPath3: allFavModel[index].productImg3,
+                        productNames: allFavModel[index].productName,
+                        productDes: allFavModel[index].productDes,
+                        productRate: allFavModel[index].productPrice,
+                        sellingRate: allFavModel[index].discountPrice)),
                     child: SizedBox(
                       height: 70,
                       width: double.infinity,
@@ -61,19 +71,18 @@ class Favorites extends StatelessWidget {
                               decoration: BoxDecoration(
                                   border: Border.all(color: kblack)),
                               child: Image(
-                                image: NetworkImage(
-                                    snapshot.data!.docs[index]['productImg']),
+                                image: NetworkImage(product.productImg1),
                               )),
                           kwidth40,
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                snapshot.data!.docs[index]['productName'],
+                                product.productName,
                                 style: const TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               ),
-                              Text(snapshot.data!.docs[index]['discountPrice'],
+                              Text(product.discountPrice,
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold))

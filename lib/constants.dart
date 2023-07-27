@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 Color kwhite = Colors.white;
 Color kblack = Colors.black;
 Color kred = Colors.red;
+Color kgreen = Colors.green;
 Color kgrey = Colors.grey;
 Color kblue = Colors.blue;
 

@@ -1,6 +1,9 @@
 import 'dart:developer';
+import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/controllers/size_controller.dart';
 import 'package:ecommerce/model/cart_model.dart';
+import 'package:ecommerce/model/fav_model.dart';
 import 'package:ecommerce/model/product_model.dart';
 import 'package:ecommerce/service/cartservice.dart';
 import 'package:ecommerce/service/favorite_service.dart';
@@ -11,7 +14,9 @@ import 'package:get/get.dart';
 import 'widgets/productsize.dart';
 
 class ProductDetailView extends StatefulWidget {
-  String? imgPath;
+  String? imgPath1;
+  String? imgPath2;
+  String? imgPath3;
   String? productNames;
   String? productDes;
   String? productRate;
@@ -19,7 +24,9 @@ class ProductDetailView extends StatefulWidget {
 
   ProductDetailView({
     super.key,
-    required this.imgPath,
+    required this.imgPath1,
+    required this.imgPath2,
+    required this.imgPath3,
     required this.productNames,
     required this.productDes,
     required this.productRate,
@@ -30,15 +37,23 @@ class ProductDetailView extends StatefulWidget {
   State<ProductDetailView> createState() => _ProductDetailViewState();
 }
 
+SizeController sizeObj = SizeController();
+
 class _ProductDetailViewState extends State<ProductDetailView> {
-  int? size;
   bool isFav = false;
   bool isCart = false;
-     final currentemail = FirebaseAuth.instance.currentUser!.email;
+  bool isSelected = false;
+  final listSize = [
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+  ];
+  final currentemail = FirebaseAuth.instance.currentUser!.email;
+  String size = '8';
   @override
   Widget build(BuildContext context) {
- 
-
     checkFavoriteStatus();
     checkCartStatus();
 
@@ -58,12 +73,16 @@ class _ProductDetailViewState extends State<ProductDetailView> {
         actions: [
           IconButton(
               onPressed: () async {
-                ProductModel model = ProductModel(
+                favModel model = favModel(
+                  currentUser: currentemail!,
+                  productSize: size,
                   productName: widget.productNames!,
                   productPrice: widget.productRate!,
                   discountPrice: widget.sellingRate!,
                   productDes: widget.productDes!,
-                  productImg: widget.imgPath!,
+                  productImg1: widget.imgPath1!,
+                  productImg2: widget.imgPath2!,
+                  productImg3: widget.imgPath3!,
                 );
                 await checkFavoriteStatus();
 
@@ -78,137 +97,155 @@ class _ProductDetailViewState extends State<ProductDetailView> {
               ))
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          kheight70,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 250,
-                width: 380,
-                child: Image(
-                  image: NetworkImage('${widget.imgPath}'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
-          ),
-          kheight20,
-          Row(
-            children: [
-              kwidth25,
-              Text(
-                '${widget.productNames}',
-                style:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              kwidth25,
-              Text(
-                '₹${widget.productRate}',
-                style: const TextStyle(
-                    fontSize: 30, decoration: TextDecoration.lineThrough),
-              ),
-              kwidth10,
-              Text(
-                '₹${widget.sellingRate}',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-              )
-            ],
-          ),
-          kheight20,
-          Padding(
-            padding: const EdgeInsets.only(left: 25, right: 25),
-            child: Text('${widget.productDes}'),
-          ),
-          kheight30,
-          const Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: Text(
-              'Size',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            kheight30,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                    height: 310,
+                    width: 380,
+                    child: AnotherCarousel(
+                      images: [
+                        NetworkImage('${widget.imgPath1}'),
+                        NetworkImage('${widget.imgPath2}'),
+                        NetworkImage('${widget.imgPath3}'),
+                      ],
+                    )),
+              ],
             ),
-          ),
-          kheight10,
-          Row(
-            children: [
-              kwidth30,
-              InkWell(
-                onTap: () {
-                  size = 8;
-                },
-                child: ProductSize(
-                  size: '8',
+            kheight20,
+            Row(
+              children: [
+                kwidth25,
+                Text(
+                  '${widget.productNames}',
+                  style: const TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-              ),
-              kwidth10,
-              InkWell(
-                onTap: () => size = 9,
-                child: ProductSize(
-                  size: '9',
-                ),
-              ),
-              kwidth10,
-              InkWell(
-                onTap: () => size = 10,
-                child: ProductSize(
-                  size: '10',
-                ),
-              ),
-              kwidth10,
-              InkWell(
-                onTap: () => size = 11,
-                child: ProductSize(
-                  size: '11',
-                ),
-              ),
-            ],
-          ),
-          kheight30,
-          Center(
-            child: SizedBox(
-              height: 50,
-              width: 200,
-              child: ElevatedButton(
-                  onPressed: () async {
-                    CartModel model = CartModel(
-                        discountPrice: widget.sellingRate!,
-                        productDes: widget.productDes!,
-                        productImg: widget.imgPath!,
-                        productName: widget.productNames!,
-                        productSize: size.toString(),
-                        currentUser: currentemail.toString());
-
-                    await checkCartStatus();
-
-                    isCart
-                        ? await CartService().removeCart(product: model)
-                        : await CartService().addCart(product: model);
-                  },
-                  child:
-                      isCart ? Text('Remove from Cart') : Text('Add to Cart')),
+              ],
             ),
-          )
-        ],
+            Row(
+              children: [
+                kwidth25,
+                Text(
+                  '₹${widget.productRate}',
+                  style: TextStyle(
+                      fontSize: 25,
+                      decoration: TextDecoration.lineThrough,
+                      color: kred),
+                ),
+                kwidth10,
+                Text(
+                  '₹${widget.sellingRate}',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 30, color: kgreen),
+                )
+              ],
+            ),
+            kheight20,
+            Padding(
+              padding: const EdgeInsets.only(left: 25, right: 25),
+              child: Text('${widget.productDes}'),
+            ),
+            kheight30,
+            const Padding(
+              padding: EdgeInsets.only(left: 30),
+              child: Text(
+                'Size',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+            ),
+            kheight10,
+            Padding(
+              padding: const EdgeInsets.only(left: 30),
+              child: SizedBox(
+                height: 50,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) => Obx(() => InkWell(
+                        onTap: () {
+                          sizeObj.sizeSelected(index);
+                          size = listSize[index];
+                        },
+                        child: Row(
+                          children: [
+                            ProductSize(
+                              color: sizeObj.selectedindex.value == index
+                                  ? kblack
+                                  : kgrey,
+                              textcolor: sizeObj.selectedindex.value == index
+                                  ? kwhite
+                                  : kblack,
+                              size: listSize[index],
+                            ),
+                            kwidth10,
+                          ],
+                        ),
+                      )),
+                  itemCount: listSize.length,
+                ),
+              ),
+            ),
+            kheight10,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor: kblack,
+                  child: IconButton(
+                      onPressed: () async {
+                        CartModel model = CartModel(
+                            discountPrice: widget.sellingRate!,
+                            productDes: widget.productDes!,
+                            productImg1: widget.imgPath1!,
+                            productImg2: widget.imgPath2!,
+                            productImg3: widget.imgPath3!,
+                            productName: widget.productNames!,
+                            productSize: size.toString(),
+                            currentUser: currentemail.toString());
+
+                        await checkCartStatus();
+
+                        isCart
+                            ? await CartService().removeCart(product: model)
+                            : await CartService().addCart(product: model);
+                      },
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: isCart ? kred : kwhite,
+                      )),
+                ),
+              ],
+            ),
+            kheight20
+          ],
+        ),
       ),
     );
   }
 
   checkFavoriteStatus() async {
     final isFavoriteProduct = await FavoriteService().checkFav(
-        product: ProductModel(
+        product: favModel(
+          productSize: size,
+          currentUser: currentemail!,
             productName: widget.productNames!,
             productPrice: widget.productRate!,
             discountPrice: widget.sellingRate!,
             productDes: widget.productDes!,
-            productImg: widget.imgPath!));
+            productImg1: widget.imgPath1!,
+            productImg2: widget.imgPath2!,
+            productImg3: widget.imgPath3!,
+            
+            ));
     setState(() {
       isFav = isFavoriteProduct;
     });
@@ -219,9 +256,12 @@ class _ProductDetailViewState extends State<ProductDetailView> {
         product: CartModel(
             productName: widget.productNames!,
             productDes: widget.productDes!,
-            productSize: size.toString(),
+            productSize: size,
             discountPrice: widget.sellingRate!,
-            productImg: widget.imgPath!,currentUser: currentemail.toString()));
+            productImg1: widget.imgPath1!,
+            productImg2: widget.imgPath2!,
+            productImg3: widget.imgPath3!,
+            currentUser: currentemail.toString()));
     setState(() {
       isCart = isCartProduct;
       log(isCart.toString());

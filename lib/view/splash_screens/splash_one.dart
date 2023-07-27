@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/view/bottomnavigation.dart';
 import 'package:ecommerce/view/splash_screens/liquid_swipe.dart';
@@ -8,6 +9,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 class SplashOne extends StatelessWidget {
   const SplashOne({super.key});
+
+    Future<bool> checkInternetConnectivity() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    return connectivityResult != ConnectivityResult.none;
+  }
 
   @override
   Widget build(BuildContext context) {

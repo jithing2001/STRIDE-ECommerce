@@ -12,7 +12,7 @@ class MyOrderService {
       await FirebaseFirestore.instance
           .collection('users')
           .doc('myorder')
-          .collection(currentemail!)
+          .collection("allOrders")
           .doc(order.productName)
           .set(order.toJson());
     } catch (e) {
