@@ -140,7 +140,7 @@ class HomeScreen extends StatelessWidget {
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     childAspectRatio: 0.9,
-                                    crossAxisSpacing: 10,
+                                    crossAxisSpacing: 15,
                                     mainAxisSpacing: 10),
                             itemBuilder: (context, index) {
                               // List<ProductModel> allProductModel = [];
@@ -171,6 +171,8 @@ class HomeScreen extends StatelessWidget {
                                   productName:
                                       allProductModel[index].productName,
                                   productRate:
+                                      allProductModel[index].productPrice,
+                                  sellingRate:
                                       allProductModel[index].discountPrice,
                                 ),
                               );

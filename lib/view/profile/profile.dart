@@ -38,8 +38,10 @@ class Profile extends StatelessWidget {
             if (snapshot.data == null) {
               return const CircularProgressIndicator();
             }
-            nameEditingController.text = snapshot.data!['name'];
-            phoneEditingController.text = snapshot.data!['phone Number'];
+            final data = snapshot.data!.data();
+            final name = data?['name'] ?? 'Unknown';
+            final email = data?['email'] ?? 'Unknown';
+            final phoneNumber = data?['phone Number'] ?? 'Unknown';
 
             return SingleChildScrollView(
               child: Column(
@@ -68,14 +70,14 @@ class Profile extends StatelessWidget {
                     ],
                   ),
                   kheight80,
-                  ProfileFields(title: 'Name', input: snapshot.data!['name']),
+                  ProfileFields(title: 'Name', input: name),
                   ProfileFields(
                     title: 'E-mail',
-                    input: snapshot.data!['email'],
+                    input: email,
                   ),
                   ProfileFields(
                     title: 'Phone Number',
-                    input: snapshot.data!['phone Number'],
+                    input: phoneNumber,
                   ),
                   kheight20,
                   Center(

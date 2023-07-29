@@ -66,7 +66,8 @@ class SearchScreen extends StatelessWidget {
                     child: HomeGridView(
                       imgPath: searchC.data[index].productImg1,
                       productName: searchC.data[index].productName,
-                      productRate: searchC.data[index].discountPrice,
+                      productRate: searchC.data[index].productPrice,
+                      sellingRate: searchC.data[index].discountPrice,
                     ),
                   );
                 },

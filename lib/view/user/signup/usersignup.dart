@@ -17,6 +17,7 @@ class UserSignUp extends StatelessWidget {
     TextEditingController phoneController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController confirmPasswordController = TextEditingController();
+    final formkey = GlobalKey<FormState>();
 
     return Scaffold(
       backgroundColor: kwhite,
@@ -37,49 +38,61 @@ class UserSignUp extends StatelessWidget {
               height: 250,
             ),
           ),
-          SignupFields(
-            controller: nameController,
-            title: 'Name',
-            hint: 'Enter your Name',
+          Form(
+            key: formkey,
+            child: Column(
+              children: [
+                SignupFields(
+                  controller: nameController,
+                  title: 'Name',
+                  hint: 'Enter your Name',
+                ),
+                SignupFields(
+                    controller: mailController,
+                    title: 'E-mail',
+                    hint: 'Enter Your Email'),
+                SignupFields(
+                    controller: phoneController,
+                    title: 'Phone Number',
+                    hint: 'Enter Your Number'),
+                SignupFields(
+                    controller: passwordController,
+                    title: 'Password',
+                    hint: 'Enter your Password'),
+                SignupFields(
+                    controller: confirmPasswordController,
+                    title: 'Confirm Password',
+                    hint: 'Re-Enter Password'),
+              ],
+            ),
           ),
-          SignupFields(
-              controller: mailController,
-              title: 'E-mail',
-              hint: 'Enter Your Email'),
-          SignupFields(
-              controller: phoneController,
-              title: 'Phone Number',
-              hint: 'Enter Your Number'),
-          SignupFields(
-              controller: passwordController,
-              title: 'Password',
-              hint: 'Enter your Password'),
-          SignupFields(
-              controller: confirmPasswordController,
-              title: 'Confirm Password',
-              hint: 'Re-Enter Password'),
           Center(
             child: SizedBox(
               width: 120,
               height: 40,
               child: ElevatedButton(
-                  onPressed: () {
-                    if (mailController.text.isNotEmpty &&
-                        passwordController.text.isNotEmpty) {
-                          Get.dialog(Center(
-                                  child: LoadingAnimationWidget.waveDots(
-                                      color: Colors.white, size: 50),
-                                ));
-                      Authentication()
-                          .registerWithEmailAndPassword(mailController.text,
-                              passwordController.text, nameController.text,phoneController.text)
-                          .then((success) {
-                        if (success) {
-                          Get.offAll( BottomNavigationClass());
-                        } else {
-                          Get.snackbar('Error', 'Invalid email or password');
-                        }
-                      });
+                  onPressed: () async {
+                    if (formkey.currentState!.validate()) {
+                      if (mailController.text.isNotEmpty &&
+                          passwordController.text.isNotEmpty) {
+                        Get.dialog(Center(
+                          child: LoadingAnimationWidget.waveDots(
+                              color: Colors.white, size: 50),
+                        ));
+                        Authentication()
+                            .registerWithEmailAndPassword(
+                                mailController.text,
+                                passwordController.text,
+                                nameController.text,
+                                phoneController.text)
+                            .then((success) {
+                          if (success) {
+                            Get.offAll(BottomNavigationClass());
+                          } else {
+                            Get.snackbar('Error', 'Invalid email or password');
+                          }
+                        });
+                      }
                     }
                   },
                   child: const Text(

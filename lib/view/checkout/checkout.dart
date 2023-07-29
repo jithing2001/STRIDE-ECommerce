@@ -267,7 +267,8 @@ class Checkout extends StatelessWidget {
                               }
                             },
                             child: PaymentsWidgets(
-                                imgPath: 'assets/images/razor_pay_icon.png',
+                                imgPath:
+                                    'assets/images/3da34d9a-be70-4440-a4a4-47a937b6daf4_razorpy.PNG',
                                 payments: 'Razorpay'),
                           ),
                           kheight20,

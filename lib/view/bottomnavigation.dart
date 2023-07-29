@@ -1,3 +1,4 @@
+import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/controllers/bottom_nav_controller.dart';
 import 'package:ecommerce/view/favorites/favorites.dart';
 import 'package:ecommerce/view/home/homescreen.dart';
@@ -13,11 +14,11 @@ class BottomNavigationClass extends StatelessWidget {
   final NavController controller = Get.put(NavController());
 
   final List<Widget> pages = [
-     HomeScreen(),
+    HomeScreen(),
     const MyOrders(),
     MyCart(),
-     Favorites(),
-     Profile(),
+    Favorites(),
+    Profile(),
   ];
 
   @override
@@ -28,35 +29,30 @@ class BottomNavigationClass extends StatelessWidget {
         bottomNavigationBar: BottomNavigationBar(
           showUnselectedLabels: true,
           unselectedLabelStyle: const TextStyle(color: Colors.black),
-          selectedItemColor: const Color.fromARGB(255, 117, 97, 231),
+          selectedItemColor: Colors.blue,
+          showSelectedLabels: true,
           unselectedItemColor: Colors.black,
+          selectedIconTheme: IconThemeData(color: kblue),
           currentIndex: navController.selectedIndex,
           onTap: (newIndex) {
             navController.changePage(newIndex);
           },
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Colors.black,
-              ),
-              label: 'Home',
-            ),
+                icon: Icon(
+                  Icons.home,
+                ),
+                label: 'Home'),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart, color: Colors.black),
-              label: 'Orders',
-            ),
+                icon: Icon(Icons.shopping_cart), label: 'Orders'),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag, color: Colors.black),
-              label: 'Cart',
-            ),
+                icon: Icon(Icons.shopping_bag), label: 'Cart'),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite, color: Colors.black),
-              
+              icon: Icon(Icons.favorite),
               label: 'Favorites',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person, color: Colors.black),
+              icon: Icon(Icons.person),
               label: 'Profile',
             ),
           ],

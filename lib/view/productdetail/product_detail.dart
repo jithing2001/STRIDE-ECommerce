@@ -122,10 +122,15 @@ class _ProductDetailViewState extends State<ProductDetailView> {
             Row(
               children: [
                 kwidth25,
-                Text(
-                  '${widget.productNames}',
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.bold),
+                SizedBox(
+                  width: 350,
+                  child: Text(
+                    '${widget.productNames}',
+                    style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis),
+                  ),
                 ),
               ],
             ),
@@ -235,17 +240,16 @@ class _ProductDetailViewState extends State<ProductDetailView> {
   checkFavoriteStatus() async {
     final isFavoriteProduct = await FavoriteService().checkFav(
         product: favModel(
-          productSize: size,
-          currentUser: currentemail!,
-            productName: widget.productNames!,
-            productPrice: widget.productRate!,
-            discountPrice: widget.sellingRate!,
-            productDes: widget.productDes!,
-            productImg1: widget.imgPath1!,
-            productImg2: widget.imgPath2!,
-            productImg3: widget.imgPath3!,
-            
-            ));
+      productSize: size,
+      currentUser: currentemail!,
+      productName: widget.productNames!,
+      productPrice: widget.productRate!,
+      discountPrice: widget.sellingRate!,
+      productDes: widget.productDes!,
+      productImg1: widget.imgPath1!,
+      productImg2: widget.imgPath2!,
+      productImg3: widget.imgPath3!,
+    ));
     setState(() {
       isFav = isFavoriteProduct;
     });

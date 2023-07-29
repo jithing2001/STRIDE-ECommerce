@@ -26,14 +26,19 @@ class PaymentsWidgets extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 35,
-                width: 40,
-                child: Image(
-                  image: AssetImage('$imgPath'),
-                  fit: BoxFit.cover,
-                ),
+              // SizedBox(
+              //   height: 30,
+              //   width: 35,
+              //   child: Image(
+              //     image: AssetImage('$imgPath'),
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
+              CircleAvatar(
+                radius: 15,
+                backgroundImage: AssetImage("$imgPath"),
               ),
+
               Text(
                 '$payments',
                 style: TextStyle(fontSize: 25, color: kwhite),

@@ -61,7 +61,8 @@ class BrandWise extends StatelessWidget {
                           productName: snapshot.data!.docs[index]
                               ['productName'],
                           productRate: snapshot.data!.docs[index]
-                              ['productPrice']),
+                              ['productPrice'],sellingRate: snapshot.data!.docs[index]['discountPrice']),
+
                     );
                   },
                   itemCount: snapshot.data!.docs.length,

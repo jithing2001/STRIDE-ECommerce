@@ -44,10 +44,14 @@ class Order_Detail extends StatelessWidget {
             Row(
               children: [
                 kwidth25,
-                Text(
-                  order.productName,
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.bold),
+                SizedBox(
+                  width: 350,
+                  child: Text(
+                    order.productName,
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),

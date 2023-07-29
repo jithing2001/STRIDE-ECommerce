@@ -13,8 +13,8 @@ class UserLogin extends StatelessWidget {
   UserLogin({super.key});
 
   TextEditingController mailController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
+  final formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,36 +34,44 @@ class UserLogin extends StatelessWidget {
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
           ),
-          LoginFields(
-            controller: mailController,
-            title: 'E-mail',
-            hint: 'Enter your Email',
+          Form(
+            key: formkey,
+            child: Column(
+              children: [
+                LoginFields(
+                  controller: mailController,
+                  title: 'E-mail',
+                  hint: 'Enter your Email',
+                ),
+                LoginFields(
+                    controller: passwordController,
+                    title: 'Password',
+                    hint: 'Enter your Password'),
+              ],
+            ),
           ),
-          LoginFields(
-              controller: passwordController,
-              title: 'Password',
-              hint: 'Enter your Password'),
           kheight10,
           loginbottonwidget(
             title: 'Sign In',
             onPressed: () {
-              if (mailController.text.isNotEmpty &&
-                  passwordController.text.isNotEmpty) {
-                Get.dialog(Center(
-                  child: LoadingAnimationWidget.waveDots(
-                      color: Colors.white, size: 50),
-                ));
-                Authentication()
-                    .signInWithEmailAndPassword(
-                        mailController.text, passwordController.text)
-                    .then((success) {
-                  if (success) {
-                    Get.offAll(BottomNavigationClass());
-                  } else {
-                    // Show an error message indicating incorrect credentials
-                    Get.snackbar('Error', 'Invalid email or password');
-                  }
-                });
+              if (formkey.currentState!.validate()) {
+                if (mailController.text.isNotEmpty &&
+                    passwordController.text.isNotEmpty) {
+                  Get.dialog(Center(
+                    child: LoadingAnimationWidget.waveDots(
+                        color: Colors.white, size: 50),
+                  ));
+                  Authentication()
+                      .signInWithEmailAndPassword(
+                          mailController.text, passwordController.text)
+                      .then((success) {
+                    if (success) {
+                      Get.offAll(BottomNavigationClass());
+                    } else {
+                      Get.snackbar('Error', 'Invalid email or password');
+                    }
+                  });
+                }
               }
             },
           ),

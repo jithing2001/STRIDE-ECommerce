@@ -5,11 +5,13 @@ class HomeGridView extends StatelessWidget {
   String? imgPath;
   String? productName;
   String? productRate;
+  String? sellingRate;
   HomeGridView(
       {super.key,
       required this.imgPath,
       required this.productName,
-      required this.productRate});
+      required this.productRate,
+      required this.sellingRate});
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +22,15 @@ class HomeGridView extends StatelessWidget {
         // height: 400,
         width: 200,
         decoration: BoxDecoration(
-            border: Border.all(color: kblack),
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+          border: Border.all(color: kblack),
+        ),
         child: Column(
           children: [
             Stack(
               children: [
                 Container(
-                  width: 200,
+                  width: 170,
                   height: 160,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20))),
-                  clipBehavior: Clip.antiAlias,
                   child: Image(
                     image: NetworkImage(
                       '$imgPath',
@@ -66,8 +61,17 @@ class HomeGridView extends StatelessWidget {
                 kwidth20,
                 Text(
                   '₹$productRate',
-                  style: const TextStyle(
-                      fontSize: 19, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: kred,
+                      decoration: TextDecoration.lineThrough),
+                ),
+                kwidth5,
+                Text(
+                  '₹$sellingRate',
+                  style: TextStyle(
+                      fontSize: 19, fontWeight: FontWeight.bold, color: kgreen),
                 ),
               ],
             )

@@ -5,8 +5,12 @@ class LoginFields extends StatelessWidget {
   String? title;
   String? hint;
   TextEditingController controller = TextEditingController();
-  
-  LoginFields({super.key, required this.title, required this.hint,required this.controller});
+
+  LoginFields(
+      {super.key,
+      required this.title,
+      required this.hint,
+      required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +27,19 @@ class LoginFields extends StatelessWidget {
           TextFormField(
             controller: controller,
             decoration: InputDecoration(
-              
                 hintText: '$hint',
                 border: OutlineInputBorder(
                     borderSide: const BorderSide(
                       color: Colors.black,
                     ),
                     borderRadius: BorderRadius.circular(10))),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'this field is requiered';
+              } else {
+                return null;
+              }
+            },
           ),
         ],
       ),
