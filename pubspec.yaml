@@ -47,6 +47,8 @@ dependencies:
   connectivity_plus: ^4.0.1
   another_carousel_pro: ^1.0.0
   lottie: ^2.5.0
+  share_plus: ^7.0.2
+  flutter_markdown: ^0.6.17
 
 dev_dependencies:
   flutter_test:

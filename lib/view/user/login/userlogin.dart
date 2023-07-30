@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lottie/lottie.dart';
 
 class UserLogin extends StatelessWidget {
   UserLogin({super.key});
@@ -21,12 +22,16 @@ class UserLogin extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: [
-          const Center(
-              child: Image(
-            image: AssetImage('assets/images/Blogpost-image.png'),
-            height: 350,
-            width: 270,
-          )),
+          Center(
+              child: Lottie.asset('assets/images/animation_lkpup8cs.json',
+                  height: 400)
+              //     Image(
+              //   image: AssetImage('assets/images/Blogpost-image.png'),
+              //   height: 350,
+              //   width: 270,
+              // )
+
+              ),
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(

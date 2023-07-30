@@ -6,6 +6,7 @@ import 'package:ecommerce/view/user/signup/widgets/signupfields.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lottie/lottie.dart';
 
 class UserSignUp extends StatelessWidget {
   const UserSignUp({super.key});
@@ -31,13 +32,9 @@ class UserSignUp extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          const Center(
-            child: Image(
-              image: AssetImage(
-                  'assets/images/istockphoto-1305268276-612x612.jpg'),
-              height: 250,
-            ),
-          ),
+          Center(
+              child: Lottie.asset('assets/images/animation_lkpufey0.json',
+                  height: 250)),
           Form(
             key: formkey,
             child: Column(

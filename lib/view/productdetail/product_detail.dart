@@ -67,7 +67,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
               Get.back();
             },
             icon: Icon(
-              Icons.arrow_back,
+              Icons.arrow_back_ios_new,
               color: kblack,
             )),
         actions: [
