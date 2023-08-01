@@ -28,7 +28,7 @@ class HomeGridView extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Container(
+                SizedBox(
                   width: 170,
                   height: 160,
                   child: Image(

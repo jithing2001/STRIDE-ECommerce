@@ -5,7 +5,6 @@ import 'package:ecommerce/controllers/cart_size_controller.dart';
 import 'package:ecommerce/controllers/total_controller.dart';
 import 'package:ecommerce/model/cart_model.dart';
 import 'package:ecommerce/service/cartservice.dart';
-import 'package:ecommerce/view/checkout/checkout.dart';
 import 'package:ecommerce/view/mycart/widgets/checkout_section.dart';
 import 'package:ecommerce/view/mycart/widgets/size_edit_dialog.dart';
 import 'package:ecommerce/view/productdetail/product_detail.dart';

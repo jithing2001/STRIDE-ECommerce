@@ -35,7 +35,7 @@ class AddressServices {
   }
 
   getAddess() async {
-    final access = FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('users')
         .doc('address')
         .collection(currentemail!)

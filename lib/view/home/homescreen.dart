@@ -147,19 +147,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           allProductModel.sort((a, b) {
                             double aPrice = double.parse(a.discountPrice);
                             double bPrice = double.parse(b.discountPrice);
-                            return aPrice.compareTo(bPrice); // Ascending order
+                            return aPrice.compareTo(bPrice);
                           });
                         } else if (sortingOption == "desc") {
                           allProductModel.sort((a, b) {
                             double aPrice = double.parse(a.discountPrice);
                             double bPrice = double.parse(b.discountPrice);
-                            return bPrice.compareTo(aPrice); // Descending order
+                            return bPrice.compareTo(aPrice);
                           });
                         }
 
                         return GridView.builder(
-                          shrinkWrap: true, // Set shrinkWrap to true
-                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
@@ -167,9 +167,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisSpacing: 15,
                                   mainAxisSpacing: 10),
                           itemBuilder: (context, index) {
-                            // List<ProductModel> allProductModel = [];
-                            // allProductModel.addAll(snapshot.data!.docs
-                            //     .map((e) => ProductModel.fromJson(e.data())));
                             return InkWell(
                               onTap: () {
                                 Get.to(ProductDetailView(
@@ -214,16 +211,16 @@ class _HomeScreenState extends State<HomeScreen> {
           sortingOption = value;
         });
       },
-      items: [
-        const DropdownMenuItem<String>(
+      items: const [
+        DropdownMenuItem<String>(
           value: null,
           child: Text("Newest First"), // Default (No sorting)
         ),
-        const DropdownMenuItem<String>(
+        DropdownMenuItem<String>(
           value: "asc",
           child: Text("Price - Low to High"),
         ),
-        const DropdownMenuItem<String>(
+        DropdownMenuItem<String>(
           value: "desc",
           child: Text("Price - High to Low"),
         ),

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/model/fav_model.dart';
-import 'package:ecommerce/model/product_model.dart';
 import 'package:ecommerce/service/favorite_service.dart';
 import 'package:ecommerce/view/productdetail/product_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';

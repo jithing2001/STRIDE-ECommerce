@@ -60,7 +60,7 @@ class SettingsClass extends StatelessWidget {
                   icon: Icons.event_note, title: 'Terms and Conditions')),
           InkWell(
               onTap: () {
-                Get.dialog(AlertDialog(
+                Get.dialog(const AlertDialog(
                   content: Signout(),
                 ));
               },

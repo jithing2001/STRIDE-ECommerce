@@ -8,7 +8,6 @@ import 'package:ecommerce/service/my_order_service.dart';
 import 'package:ecommerce/view/checkout/widgets/payment_widgets.dart';
 import 'package:ecommerce/view/checkout/widgets/shipping_address_widget.dart';
 import 'package:ecommerce/view/checkout/widgets/shipping_addresses.dart';
-import 'package:ecommerce/view/orders/orders.dart';
 import 'package:ecommerce/view/payment/razorpay.dart';
 import 'package:ecommerce/view/success/success.dart';
 import 'package:firebase_auth/firebase_auth.dart';
