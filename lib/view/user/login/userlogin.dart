@@ -51,7 +51,7 @@ class UserLogin extends StatelessWidget {
                 LoginFields(
                     controller: passwordController,
                     title: 'Password',
-                    hint: 'Enter your Password'),
+                    hint: 'Enter your Password',isSuffix: true),
               ],
             ),
           ),

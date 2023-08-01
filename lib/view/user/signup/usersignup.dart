@@ -55,11 +55,14 @@ class UserSignUp extends StatelessWidget {
                 SignupFields(
                     controller: passwordController,
                     title: 'Password',
-                    hint: 'Enter your Password'),
+                    hint: 'Enter your Password',
+                    isSuffix: true),
                 SignupFields(
-                    controller: confirmPasswordController,
-                    title: 'Confirm Password',
-                    hint: 'Re-Enter Password'),
+                  controller: confirmPasswordController,
+                  title: 'Confirm Password',
+                  hint: 'Re-Enter Password',
+                  isSuffix: true,
+                ),
               ],
             ),
           ),
