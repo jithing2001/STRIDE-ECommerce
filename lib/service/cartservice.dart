@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce/controllers/quantity_controller.dart';
+import 'package:ecommerce/controllers/total_controller.dart';
 import 'package:ecommerce/model/cart_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -62,5 +62,14 @@ class CartService {
     for (final doc in querySnapshot.docs) {
       await doc.reference.delete();
     }
+  }
+
+  editProductSize({required CartModel product, required int size}) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc('cart')
+        .collection(currentemail!)
+        .doc(product.productName)
+        .update({'size': size.toString()});
   }
 }

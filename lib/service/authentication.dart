@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,12 +12,15 @@ class Authentication {
   Future<bool> registerWithEmailAndPassword(
       String email, String password, String name, String number) async {
     try {
+      log('trying');
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+        log('complete');
       User? user = userCredential.user;
+         
 
       await _firestore.collection('user_details').doc(user!.uid).set({
         'email': email,
