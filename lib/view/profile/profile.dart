@@ -42,6 +42,8 @@ class Profile extends StatelessWidget {
             final name = data?['name'] ?? 'Unknown';
             final email = data?['email'] ?? 'Unknown';
             final phoneNumber = data?['phone Number'] ?? 'Unknown';
+            nameEditingController.text = name;
+            phoneEditingController.text = phoneNumber;
 
             return SingleChildScrollView(
               child: Column(

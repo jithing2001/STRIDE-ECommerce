@@ -42,10 +42,9 @@ class Favorites extends StatelessWidget {
               itemBuilder: (context, index) {
                 final favorite = snapshot.data!.docs[index].data();
                 final product = favModel.fromJson(favorite);
-                    List<favModel> allFavModel = [];
-                      allFavModel.addAll(snapshot.data!.docs.map((e) =>
-                          favModel.fromJson(
-                              e.data() as Map<String, dynamic>)));
+                List<favModel> allFavModel = [];
+                allFavModel.addAll(snapshot.data!.docs.map((e) =>
+                    favModel.fromJson(e.data() as Map<String, dynamic>)));
 
                 return Padding(
                   padding: const EdgeInsets.all(10),
@@ -75,13 +74,19 @@ class Favorites extends StatelessWidget {
                           kwidth40,
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                product.productName,
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              SizedBox(
+                                width: 200,
+                                child: Text(
+                                  product.productName,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                              Text(product.discountPrice,
+                              Text("₹${product.discountPrice}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold))

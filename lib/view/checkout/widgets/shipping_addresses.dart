@@ -70,6 +70,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                 return InkWell(
                     onTap: () {
                       ad.indexChanging(index);
+                      Get.back();
                     },
                     child: snapshot.hasData
                         ? AddressCard(
