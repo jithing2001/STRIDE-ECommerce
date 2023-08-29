@@ -9,7 +9,7 @@ class CartSizeController extends GetxController {
   CartSizeController({int? initialSizeEdit}) : sizeEdit = initialSizeEdit;
 
   addSize({required CartModel product}) async {
-    // if (sizeEdit! < 12) {
+    if (sizeEdit! < 12) {
       Get.dialog(Center(
         child: LoadingAnimationWidget.waveDots(color: Colors.white, size: 50),
       ));
@@ -17,11 +17,11 @@ class CartSizeController extends GetxController {
       await CartService().editProductSize(product: product, size: sizeEdit!);
       update();
       Get.back();
-    // }
+    }
   }
 
   removeSize({required CartModel product}) async {
-    // if (sizeEdit! > 8) {
+    if (sizeEdit! > 8) {
       Get.dialog(Center(
         child: LoadingAnimationWidget.waveDots(color: Colors.white, size: 50),
       ));
@@ -30,6 +30,6 @@ class CartSizeController extends GetxController {
       await CartService().editProductSize(product: product, size: sizeEdit!);
       update();
       Get.back();
-    // }
+    }
   }
 }
