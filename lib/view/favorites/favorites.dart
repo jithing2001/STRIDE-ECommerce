@@ -34,7 +34,7 @@ class Favorites extends StatelessWidget {
             }
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
               return const Center(
-                child: Text(""),
+                child: Text("No Favorites found"),
               );
             }
             return ListView.builder(
